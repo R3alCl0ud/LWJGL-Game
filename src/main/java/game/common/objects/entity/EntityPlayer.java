@@ -1,6 +1,8 @@
 package game.common.objects.entity;
 
-public abstract class EntityPlayer {
+import game.common.objects.IPlayer;
+
+public abstract class EntityPlayer implements IPlayer {
 
 	private String name;
 	private int xp;
