@@ -1,11 +1,11 @@
-package game.common.objects;
+package game.common.objects.entity;
 
-public class Player {
+public abstract class EntityPlayer {
 
 	private String name;
 	private int xp;
 
-	public Player(String name, int xp) {
+	public EntityPlayer(String name, int xp) {
 		this.name = name;
 		this.xp = xp;
 	}
