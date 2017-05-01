@@ -2,8 +2,6 @@ package game.common.objects;
 
 public interface IPlayer extends ILiving {
 
-	// String getName();
-
 	int getLevel();
 
 	int getXP();
