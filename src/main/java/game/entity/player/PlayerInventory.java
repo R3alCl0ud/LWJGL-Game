@@ -1,4 +1,4 @@
-package game.common.objects.entity.player;
+package game.entity.player;
 
 import java.util.ArrayList;
 import java.util.List;

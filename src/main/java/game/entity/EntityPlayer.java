@@ -1,4 +1,4 @@
-package game.common.objects.entity;
+package game.entity;
 
 import game.common.objects.IPlayer;
 
