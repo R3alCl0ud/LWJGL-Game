@@ -81,6 +81,7 @@ public class Index {
 		window = glfwCreateWindow(300, 300, "SCHITY RPG", NULL, NULL);
 		if (window == NULL) throw new RuntimeException("Failed to create the GLFW window");
 
+
 		// Setup a key callback. It will be called every time a key is pressed,
 		// repeated or released.
 		glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {

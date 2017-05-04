@@ -36,9 +36,8 @@ public abstract class Util implements IItem {
 	public int getSpeed() { return speed; }
 	
 	public int distanceTraveled(int t) { return speed * t; }
-	public int distanceTraveled(int xpos1, int ypos1, int xpos2, int ypos2) {
-		// TODO: Implement distance formula
-		return 0;
+	public double distanceTraveled(int xpos1, int ypos1, int xpos2, int ypos2) {
+		return Math.sqrt(Math.pow(xpos1 - xpos2, 2) + Math.pow(ypos1 - ypos2, 2));
 	}
 	
 	// Default constructor
