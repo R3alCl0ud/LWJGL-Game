@@ -5,6 +5,9 @@ import game.common.objects.IItem;
 public abstract class Util implements IItem {
 	private int xPos, yPos, r = -1;
 	private int speed;
+	private String name;
+	
+	private boolean isTool;
 	
 	public int getReachPosDX() {
 		return (int)(Math.cos(xPos)) * r;
@@ -42,10 +45,29 @@ public abstract class Util implements IItem {
 	
 	// Default constructor
 	public Util() {
-		// TODO: Implement Util library.
 		xPos = 0;
 		yPos = 0;
 		r = 1;
 		speed = 1;
+		name = "timmy tron doll";
+		isTool = false;
+	}
+	
+	// Recommended Constructor
+	public Util(int startX, int startY, int reach, int speed, String name, boolean isTool) {
+		xPos = startX;
+		yPos = startY;
+		r = reach;
+		this.speed = speed;
+		this.name = name;
+		this.isTool = isTool;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public boolean isTool() {
+		return isTool;
 	}
 }
