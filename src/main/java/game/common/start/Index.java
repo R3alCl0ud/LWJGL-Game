@@ -15,19 +15,22 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 public class Index {
 
-	// private static Window window;
+	// The window handle
 	private long window;
-	private Thread draw;
-
-	public static void main(String... args) {
-		// window = new Window();
-		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
-		new Index().run();
-	}
 
 	public void run() {
+		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
+
 		init();
 		loop();
+
+		// Free the window callbacks and destroy the window
+		glfwFreeCallbacks(window);
+		glfwDestroyWindow(window);
+
+		// Terminate GLFW and free the error callback
+		glfwTerminate();
+		glfwSetErrorCallback(null).free();
 	}
 
 	private void init() {
@@ -36,28 +39,27 @@ public class Index {
 		GLFWErrorCallback.createPrint(System.err).set();
 
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
-		if (!glfwInit()) throw new IllegalStateException("Unable to initialize GLFW");
+		if ( !glfwInit() )
+			throw new IllegalStateException("Unable to initialize GLFW");
 
 		// Configure GLFW
-		// optional, the current window hints are already the default
-		glfwDefaultWindowHints();
-		// the window will stay hidden after creation
-		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-		// the window will be resizable
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+		glfwDefaultWindowHints(); // optional, the current window hints are already the default
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
 		// Create the window
 		window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL);
-		if (window == NULL) throw new RuntimeException("Failed to create the GLFW window");
+		if ( window == NULL )
+			throw new RuntimeException("Failed to create the GLFW window");
 
-		// Setup a key callback. It will be called every time a key is pressed,
-		// repeated or released.
+		// Setup a key callback. It will be called every time a key is pressed, repeated or released.
 		glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-			if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) glfwSetWindowShouldClose(window, true);
+			if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
+				glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
 		});
 
 		// Get the thread stack and push a new frame
-		try (MemoryStack stack = stackPush()) {
+		try ( MemoryStack stack = stackPush() ) {
 			IntBuffer pWidth = stack.mallocInt(1); // int*
 			IntBuffer pHeight = stack.mallocInt(1); // int*
 
@@ -68,7 +70,11 @@ public class Index {
 			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 			// Center the window
-			glfwSetWindowPos(window, (vidmode.width() - pWidth.get(0)) / 2, (vidmode.height() - pHeight.get(0)) / 2);
+			glfwSetWindowPos(
+				window,
+				(vidmode.width() - pWidth.get(0)) / 2,
+				(vidmode.height() - pHeight.get(0)) / 2
+			);
 		} // the stack frame is popped automatically
 
 		// Make the OpenGL context current
@@ -78,7 +84,6 @@ public class Index {
 
 		// Make the window visible
 		glfwShowWindow(window);
-		// startDrawing();
 	}
 
 	private void loop() {
@@ -94,9 +99,8 @@ public class Index {
 
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
-		while (!glfwWindowShouldClose(window)) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the
-																// framebuffer
+		while ( !glfwWindowShouldClose(window) ) {
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
 			glfwSwapBuffers(window); // swap the color buffers
 
@@ -106,27 +110,8 @@ public class Index {
 		}
 	}
 
-	public void startDrawing() {
-
-		draw = new Thread("Window Drawing") {
-
-			public void run() {
-				GL.createCapabilities();
-
-				// Set the clear color
-				glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
-				while (!draw.isInterrupted() && !glfwWindowShouldClose(window)) {
-					// clear the framebuffer
-					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-					glfwSwapBuffers(window); // swap the color buffers
-
-					// Poll for window events. The key callback above will only
-					// be invoked during this call.
-					glfwPollEvents();
-				}
-			}
-		};
+	public static void main(String[] args) {
+		new Index().run();
 	}
 
 }
