@@ -13,18 +13,47 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-public class Window {
+public class Window implements Runnable {
 
 	private long window;
-
-	public Window() {
+	private int width, height;
+	private String title = "SCHTY RPG";
+	
+	private long monitor = glfwGetPrimaryMonitor();
+	
+	public Window() throws NullPointerException {
+		
+		if (!glfwInit()) throw new NullPointerException();
+		
+		this.window = glfwCreateWindow(width, height, title, monitor, NULL);
+		
+		if (this.window == NULL) {
+			glfwTerminate();
+			throw new NullPointerException();
+		}
+		
+		glfwMakeContextCurrent(window);
+		
+		
+	}
+	
+	private void render() {
+		
+	}
+	
+	private void update() {
+		
 	}
 
 	/**
-	 * @return the window
+	 * @return the window ID
 	 */
 	public long getWindow() {
 		return window;
+	}
+	
+	public void run() {
+		
 	}
 
 }

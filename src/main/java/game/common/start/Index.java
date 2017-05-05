@@ -13,10 +13,15 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-public class Index {
-
+public class Index implements Runnable {
+	// Thread Group
+	ThreadGroup tg;
+	
 	// The window handle
 	private long window;
+	
+	// Event Polling Thread
+	private Thread evntPoll;
 
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
@@ -95,7 +100,7 @@ public class Index {
 		GL.createCapabilities();
 
 		// Set the clear color
-		glClearColor(1.0f, 0.5f, 1.0f, 0.0f);
+		glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
@@ -108,6 +113,11 @@ public class Index {
 			// invoked during this call.
 			glfwPollEvents();
 		}
+	}
+	
+	private GLFWWindowRefreshCallbackI  update() {
+		// Would Change later
+		return null;
 	}
 
 	public static void main(String[] args) {
