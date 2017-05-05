@@ -1,6 +1,6 @@
 /**
  * 
  * 
- * @author Perry Berman
+ * @author Perry Berman, Zachary Waldron
  */
 package game.common;
