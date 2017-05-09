@@ -29,11 +29,9 @@ import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_POLYGON;
 import static org.lwjgl.opengl.GL11.GL_VERTEX_ARRAY;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL11.glEnableClientState;
 import static org.lwjgl.opengl.GL11.glVertexPointer;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
@@ -44,6 +42,7 @@ import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.system.MemoryStack.stackPop;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import static org.lwjgl.system.MemoryUtil.memAllocFloat;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -53,16 +52,16 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowRefreshCallbackI;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 
 import game.entity.Entity;
-import game.entity.render.RenderManager;
 
 public class Index implements Runnable {
-	
+
 	// The window handle
 	private long window;
-	
+
 	// Event Polling Thread
 	private Thread evntPoll;
 
@@ -74,13 +73,13 @@ public class Index implements Runnable {
 		// manager.startRenderer();
 
 		// glfwMakeContextCurrent(window);
-		// // Free the window callbacks and destroy the window
-		// glfwFreeCallbacks(window);
-		// glfwDestroyWindow(window);
+		// Free the window callbacks and destroy the window
+		glfwFreeCallbacks(window);
+		glfwDestroyWindow(window);
 		//
-		// // Terminate GLFW and free the error callback
-		// glfwTerminate();
-		// glfwSetErrorCallback(null).free();
+		// Terminate GLFW and free the error callback
+		glfwTerminate();
+		glfwSetErrorCallback(null).free();
 	}
 
 	private void init() {
@@ -162,23 +161,29 @@ public class Index implements Runnable {
 
 		// stackPop();
 
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glVertexPointer(2, GL_FLOAT, 0, 0L);
-		Entity triangle = new Entity();
+		// Entity triangle = new Entity();
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
 		while (!glfwWindowShouldClose(window)) {
 			// clear the framebuffer
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+			GL11.glViewport(0, 0, 300, 300);
 			stackPush();
-			FloatBuffer buffer = triangle.draw();
+			FloatBuffer buffer = memAllocFloat(4 * 2);
+			buffer.put(0.0f).put(1.0f);
+			buffer.put(1.0f).put(1.0f);
+			buffer.put(0.5f).put(0.0f);
+			buffer.put(0.0f).put(0.0f);
+			buffer.flip();
 			int vbo = glGenBuffers();
 			glBindBuffer(GL_ARRAY_BUFFER, vbo);
 			glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
 
 			stackPop();
-			// glDrawArrays(GL_POLYGON, 0, 4);
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glVertexPointer(2, GL_FLOAT, 0, 0L);
+			GL11.glRotatef(100.0f, 0, 0, 1);
+			GL11.glDrawArrays(GL11.GL_POLYGON, 0, 4);
 			// GL11.
 			// swap the color buffers
 			glfwSwapBuffers(window);
@@ -190,8 +195,8 @@ public class Index implements Runnable {
 			glfwPollEvents();
 		}
 	}
-	
-	private GLFWWindowRefreshCallbackI  update() {
+
+	private GLFWWindowRefreshCallbackI update() {
 		// Would Change later
 		return null;
 	}
