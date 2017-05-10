@@ -19,17 +19,8 @@ public class Entity {
 		posY = 0;
 	}
 
-	public FloatBuffer draw() {
-		FloatBuffer buffer = memAllocFloat(4 * 2);
-		buffer.put((+0.5f + posX)).put(+0.5f);
-		buffer.put((+0.0f + posX)).put(+0.5f);
-		buffer.put((+0.5f + posX)).put(-0.5f);
-		buffer.put((+0.0f + posX)).put(-0.5f);
-		buffer.flip();
-		if (posX % 2 == 0 && posX % 3 == 0) posX += 2;
-		else if (posX % 2 == 1) posX++;
-		else posX--;
-		return buffer;
+	public void draw() {
+
 	}
 
 	/**

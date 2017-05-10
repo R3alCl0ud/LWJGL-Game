@@ -1,6 +1,7 @@
 package game.entity.render;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
+import static org.lwjgl.system.MemoryUtil.memAllocFloat;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
@@ -51,6 +52,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 
 import game.entity.Entity;
@@ -100,7 +102,7 @@ public class RenderManager {
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 					stackPush();
-					FloatBuffer buffer = triangle.draw();
+					FloatBuffer buffer = memAllocFloat(4 * 2);
 					int vbo = glGenBuffers();
 					glBindBuffer(GL_ARRAY_BUFFER, vbo);
 					glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);

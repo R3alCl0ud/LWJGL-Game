@@ -10,7 +10,7 @@ import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.system.MemoryStack.stackPop;
 import static org.lwjgl.system.MemoryStack.stackPush;
-
+import static org.lwjgl.system.MemoryUtil.memAllocFloat;
 import java.nio.FloatBuffer;
 
 import game.entity.Entity;
@@ -26,7 +26,7 @@ public class Renderer {
 	public void draw(Entity entity) {
 		glfwMakeContextCurrent(window);
 		stackPush();
-		FloatBuffer buffer = entity.draw();
+		FloatBuffer buffer = memAllocFloat(4 * 2);
 		int vbo = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
