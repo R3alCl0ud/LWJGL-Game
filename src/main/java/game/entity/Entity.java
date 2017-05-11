@@ -1,9 +1,5 @@
 package game.entity;
 
-import static org.lwjgl.system.MemoryUtil.memAllocFloat;
-
-import java.nio.FloatBuffer;
-
 /**
  * @author Perry Berman
  */
