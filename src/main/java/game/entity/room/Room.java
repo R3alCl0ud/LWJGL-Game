@@ -21,6 +21,7 @@ public abstract class Room {
 	public void drawTiles() {
 		Tile[][] tiles = getTiles();
 		int a = tiles.length, b = tiles[0].length, c = a * b;
+//		glPushMatrix();
 		for (int i = 0; i < c; i++) {
 			GL11.glViewport(32 * (i / a), 32 * (i % b), 32, 32);
 			GL11.glLoadIdentity();

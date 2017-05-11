@@ -2,6 +2,8 @@ package game.entity;
 
 import org.lwjgl.opengl.GL11;
 
+import game.render.Resource;
+
 public class EntityCube extends Entity {
 	private float a = 0.25f, b = -0.5f;
 	
@@ -42,5 +44,10 @@ public class EntityCube extends Entity {
 		GL11.glVertex3f(b, a, a);
 		GL11.glVertex3f(a, a, a);
 		GL11.glEnd();
+	}
+
+	@Override
+	public Resource getResourceLocation() {
+		return null;
 	}
 }

@@ -87,7 +87,6 @@ public class RenderManager {
 		screenRender = new Thread("Main Renderer") {
 
 			public void run() {
-				Entity triangle = new Entity();
 				glfwMakeContextCurrent(window);
 				GL.createCapabilities();
 

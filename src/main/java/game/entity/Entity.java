@@ -1,22 +1,18 @@
 package game.entity;
 
+import game.render.Resource;
+
 /**
  * @author Perry Berman
  */
-public class Entity {
+public abstract class Entity {
 
-	private int room;
-	private int posX;
-	private int posY;
+	protected int posX, posY, room;
 	private float yaw;
 
 	public Entity() {
-		posX = -2;
+		posX = 0;
 		posY = 0;
-	}
-
-	public void draw() {
-
 	}
 
 	/**
@@ -29,7 +25,7 @@ public class Entity {
 	/**
 	 * @return the poxY
 	 */
-	public int getPoxY() {
+	public int getPosY() {
 		return posY;
 	}
 
@@ -74,5 +70,7 @@ public class Entity {
 	public void setYaw(float yaw) {
 		this.yaw = yaw;
 	}
+
+	public abstract Resource getResourceLocation();
 
 }
