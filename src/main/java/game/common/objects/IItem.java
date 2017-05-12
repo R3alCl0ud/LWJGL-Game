@@ -1,7 +1,7 @@
 package game.common.objects;
 
 import game.entity.Entity;
-import game.render.Resource;
+import game.renderer.Resource;
 
 public interface IItem {
 	

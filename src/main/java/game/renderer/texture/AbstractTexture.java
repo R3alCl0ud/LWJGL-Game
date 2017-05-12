@@ -1,4 +1,4 @@
-package game.render.texture;
+package game.renderer.texture;
 
 import java.nio.ByteBuffer;
 

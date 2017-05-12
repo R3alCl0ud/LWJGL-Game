@@ -1,7 +1,7 @@
 package game.entity;
 
-import game.render.Resource;
-import game.render.texture.ITexture;
+import game.renderer.Resource;
+import game.renderer.texture.ITexture;
 
 /**
  * @author Perry Berman

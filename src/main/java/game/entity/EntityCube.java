@@ -2,8 +2,8 @@ package game.entity;
 
 import org.lwjgl.opengl.GL11;
 
-import game.render.Resource;
-import game.render.texture.ITexture;
+import game.renderer.Resource;
+import game.renderer.texture.ITexture;
 
 public class EntityCube extends Entity {
 	private float a = 0.25f, b = -0.5f;

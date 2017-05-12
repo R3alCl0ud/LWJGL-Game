@@ -1,4 +1,4 @@
-package game.render.texture;
+package game.renderer.texture;
 
 import static org.lwjgl.stb.STBImage.stbi_set_flip_vertically_on_load;
 
@@ -11,11 +11,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.stb.STBImage;
 
-import game.render.Resource;
+import game.renderer.Resource;
 
-public class ItemTexture extends AbstractTexture {
+public class Texture extends AbstractTexture {
 
-	public ItemTexture(Resource resource) {
+	public Texture(Resource resource) {
 		super();
 		IntBuffer w = BufferUtils.createIntBuffer(1);
 		IntBuffer h = BufferUtils.createIntBuffer(1);

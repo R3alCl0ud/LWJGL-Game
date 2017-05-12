@@ -5,7 +5,7 @@ import game.common.RoomManager;
 import game.common.objects.IItem;
 import game.entity.Entity;
 import game.entity.item.EntityItem;
-import game.render.Resource;
+import game.renderer.Resource;
 
 /**
  * @author Perry Berman
@@ -14,6 +14,7 @@ import game.render.Resource;
 public class Item implements IItem {
 	
 	private String name;
+	
 	
 	public Item() {
 		

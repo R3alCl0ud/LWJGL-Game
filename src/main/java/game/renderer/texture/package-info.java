@@ -3,4 +3,4 @@
  * 
  * @author Perry Berman
  */
-package game.render;
+package game.renderer.texture;

@@ -15,7 +15,7 @@ import game.entity.tile.TileWood;
  * @author Perry Berman
  */
 public class RoomHome extends Room {
-	
+
 	private Tile[][] tiles = new Tile[16][16];
 	private Tile grass;
 	private Tile water;
@@ -23,7 +23,7 @@ public class RoomHome extends Room {
 	private Tile wall;
 	private Tile window;
 	private List<Entity> entities;
-	
+
 	public RoomHome() {
 		entities = new ArrayList<>();
 		grass = new TileGrass();
@@ -31,38 +31,36 @@ public class RoomHome extends Room {
 		wood = new TileWood();
 		wall = new TileWall();
 		window = new TileWindow();
-		
+
 		for (int i = 0; i < 16 * 16; i++) {
 			int x = i / 16, y = i % 16;
-			if (x > 3 && x < 12 && y == 11) {
-				tiles[x][y] = wood;
-			} else if (x > 4 && x < 11 && y == 12) {
-				tiles[x][y] = wood;
+			if ((x > 3 && x < 12 && y == 11) || (x > 4 && x < 11 && y == 12)) {
+				tiles[x][y] = new TileWood(90f);
 			} else if (x > 2 && x < 13 && y >= 3 && y <= 11) {
 				if ((x == 6 || x == 9) && y == 9) {
-					tiles[x][y] = window;
+					tiles[x][y] = new TileWindow();
 				} else if (x >= 5 && x < 11 && y >= 7) {
-					tiles[x][y] = wall;
+					tiles[x][y] = new TileWall(x == 6 && y == 8 ? 0f : 0f);
 				} else if (x > 6 && x <= 8) {
-					tiles[x][y] = wood;
+					tiles[x][y] = new TileWood();
 				} else {
-					tiles[x][y] = water;
+					tiles[x][y] = new TileWater();
 				}
 			} else {
-				tiles[x][y] = grass;
+				tiles[x][y] = new TileGrass();
 			}
 		}
 	}
-	
+
 	public Tile[][] getTiles() {
 		return tiles;
 	}
-	
+
 	@Override
 	public Entity[] getEntities() {
 		return entities.toArray(new Entity[0]);
 	}
-	
+
 	@Override
 	public void addEntity(Entity entity) {
 		entities.add(entity);

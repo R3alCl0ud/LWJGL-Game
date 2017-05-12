@@ -35,7 +35,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import java.nio.IntBuffer;
 
 import org.lwjgl.Version;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -45,28 +47,40 @@ import game.common.ItemRegistry;
 import game.common.RoomManager;
 import game.common.TextureManager;
 import game.common.item.Item;
+import game.common.renderer.IRenderer;
+import game.common.renderer.entity.EntityRenderer;
+import game.entity.Entity;
+import game.entity.player.EntityPlayer;
 import game.entity.room.Room;
 import game.entity.room.RoomHome;
-import game.render.texture.ItemTexture;
+import game.entity.tile.Tile;
+import game.renderer.Resource;
+import game.renderer.texture.Texture;
 
 public class Index implements Runnable {
-	
+
 	// The window handle
 	private long window;
-	
+
 	// Event Polling Thread
-	// private Thread evntPoll;
+	private Thread evntPoll;
 	private Room current;
-	
+	private EntityPlayer player;
+	private IRenderer<Entity> playerRenderer;
+
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 		System.setProperty("java.awt.headless", "true");
 		init();
 		Item.registerItems();
-		TextureManager.registerTexture("Jar", new ItemTexture(ItemRegistry.getItem("Jar").getResourceLocation()));
+		Tile.registerTextures();
+		TextureManager.registerTexture("Jar", new Texture(ItemRegistry.getItem("Jar").getResourceLocation()));
+		TextureManager.registerTexture("player", new Texture(new Resource("game", "texture/entity/player.png")));
 		current = new RoomHome();
+		player = new EntityPlayer("Player 1", 20);
+		playerRenderer = new EntityRenderer();
 		RoomManager.registerRoom(current);
-		
+
 		loop();
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(window);
@@ -76,114 +90,176 @@ public class Index implements Runnable {
 		glfwTerminate();
 		glfwSetErrorCallback(null).free();
 	}
-	
+
 	// private void registerTextures() {
 	//
 	// }
-	
+	private boolean up, down, left, right;
+
 	private void init() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
 		GLFWErrorCallback.createPrint(System.err).set();
-		
+
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
-		if (!glfwInit())
-			throw new IllegalStateException("Unable to initialize GLFW");
-		
+		if (!glfwInit()) throw new IllegalStateException("Unable to initialize GLFW");
+
 		// Configure GLFW
 		glfwDefaultWindowHints(); // optional, the current window hints are
-									 // already the default
+									// already the default
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden
-													 // after creation
+													// after creation
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be
-													 // resizable
-		
+													// resizable
+
 		// Create the window
 		window = glfwCreateWindow(510, 510, "AN RPG", NULL, NULL);
-		if (window == NULL)
-			throw new RuntimeException("Failed to create the GLFW window");
-		
+		if (window == NULL) throw new RuntimeException("Failed to create the GLFW window");
+
 		/*
-		 * Setup a key callback. It will be called every time a key is pressed, repeated or released.
+		 * Setup a key callback. It will be called every time a key is pressed,
+		 * repeated or released.
 		 */
-		glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-			if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-				// We will detect this in the rendering loop
-				glfwSetWindowShouldClose(window, true);
+		glfwSetKeyCallback(window, new GLFWKeyCallback() {
+
+			// private long lastKeyCheck = System.currentTimeMillis();
+
+			public void invoke(long window, int key, int scancode, int action, int mods) {
+				long currentTime = System.currentTimeMillis();
+				if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+					// We will detect this in the rendering loop
+					glfwSetWindowShouldClose(window, true);
+				} else if (key == GLFW.GLFW_KEY_W) {
+					if (action == GLFW.GLFW_PRESS) up = true;
+					if (action == GLFW.GLFW_RELEASE) up = false;
+				} else if (key == GLFW.GLFW_KEY_S) {
+					if (action == GLFW.GLFW_PRESS) down = true;
+					if (action == GLFW.GLFW_RELEASE) down = false;
+				} else if (key == GLFW.GLFW_KEY_D) {
+					if (action == GLFW.GLFW_PRESS) right = true;
+					if (action == GLFW.GLFW_RELEASE) right = false;
+				} else if (key == GLFW.GLFW_KEY_A) {
+					if (action == GLFW.GLFW_PRESS) left = true;
+					if (action == GLFW.GLFW_RELEASE) left = false;
+				}
+				// lastKeyCheck = currentTime;
+			}
 		});
-		
+
 		// Get the thread stack and push a new frame
 		try (MemoryStack stack = stackPush()) {
 			IntBuffer pWidth = stack.mallocInt(1); // int*
 			IntBuffer pHeight = stack.mallocInt(1); // int*
-			
+
 			// Get the window size passed to glfwCreateWindow
 			glfwGetWindowSize(window, pWidth, pHeight);
-			
+
 			// Get the resolution of the primary monitor
 			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-			
+
 			// Center the window
 			glfwSetWindowPos(window, (vidmode.width() - pWidth.get(0)) / 2, (vidmode.height() - pHeight.get(0)) / 2);
 		} // the stack frame is popped automatically
-		
+
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(window);
 		// Enable v-sync
 		glfwSwapInterval(1);
-		
+
 		// Make the window visible
 		glfwShowWindow(window);
-		
+
 		GL.createCapabilities();
-		
+
 		// manager = new RenderManager(window);
 		// renderer = new Renderer(window);
 	}
-	
+
 	private void loop() {
 		/*
-		 * This line is critical for LWJGL's interoperation with GLFW's OpenGL context, or any context that is managed externally. LWJGL
-		 * detects the context that is current in the current thread, creates the GLCapabilities instance and makes the OpenGL bindings
+		 * This line is critical for LWJGL's interoperation with GLFW's OpenGL
+		 * context, or any context that is managed externally. LWJGL
+		 * detects the context that is current in the current thread, creates
+		 * the GLCapabilities instance and makes the OpenGL bindings
 		 * available for use.
 		 */
-		
+
 		// Set the clear color
 		GL11.glClearColor(1f, 1f, 1f, 1.0f);
-		
+
 		glEnable(GL_TEXTURE_2D);
-		
+
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
 		while (!glfwWindowShouldClose(window)) {
-			// event shit
-			glfwPollEvents();
-			
 			// clear the framebuffer
 			glClear(GL_COLOR_BUFFER_BIT);
-			
 			// Draw shit
 			doDraw();
-			
+			// handle the players movement first, because it's more logical to
+			// do it like this
+			// this will be moved into a different thread later
+			playerMovement();
 			// swap the color buffers
 			glfwSwapBuffers(window);
-			
+			// event shit
+			glfwPollEvents();
+
 		}
 		GL11.glDisable(GL_TEXTURE_2D);
 	}
-	
+
 	private void doDraw() {
 		current.drawTiles();
 		current.renderEntities();
+		playerRenderer.renderAt(player, player.getPosX(), player.getPosY(), 64, 128, 0f);
 	}
-	
+
+	private void playerMovement() {
+		if (up && !down) {
+			if (left || right) {
+				player.setPosY((int) (player.getPosY() + (3.5d / 1.25d)));
+			} else {
+				player.setPosY((int) (player.getPosY() + 3.5d));
+			}
+		} else if (down && !up) {
+			if (left || right) {
+				player.setPosY((int) (player.getPosY() - (3d / 2d)));
+			} else {
+				player.setPosY((int) (player.getPosY() - 3d));
+			}
+		}
+		if (left && !right) {
+			if (up || down) {
+				player.setPosX((int) (player.getPosX() - (2d / 1.5d)));
+			} else {
+				player.setPosX((int) (player.getPosX() - 3d));
+			}
+		} else if (right && !left) {
+			if (up || down) {
+				player.setPosX((int) (player.getPosX() + (3.5d / 1.25d)));
+			} else {
+				player.setPosX((int) (player.getPosX() + 3.5d));
+			}
+		}
+	}
+
+	private void startKeying() {
+		evntPoll = new Thread("Keys for days") {
+
+			public void run() {
+
+			}
+		};
+	}
+
 	// private GLFWWindowRefreshCallbackI update() {
 	// // Would Change later
 	// return null;
 	// }
-	
+
 	public static void main(String[] args) {
 		new Index().run();
 	}
-	
+
 }

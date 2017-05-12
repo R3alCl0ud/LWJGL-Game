@@ -1,4 +1,4 @@
-package game.render;
+package game.renderer;
 
 import static org.lwjgl.BufferUtils.createByteBuffer;
 
