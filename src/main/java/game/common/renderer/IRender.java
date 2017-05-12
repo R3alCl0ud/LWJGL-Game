@@ -1,4 +1,4 @@
-package game.render;
+package game.common.renderer;
 
 public interface IRender<T> {
 

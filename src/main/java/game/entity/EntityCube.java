@@ -3,6 +3,7 @@ package game.entity;
 import org.lwjgl.opengl.GL11;
 
 import game.render.Resource;
+import game.render.texture.ITexture;
 
 public class EntityCube extends Entity {
 	private float a = 0.25f, b = -0.5f;
@@ -48,6 +49,15 @@ public class EntityCube extends Entity {
 
 	@Override
 	public Resource getResourceLocation() {
+		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see game.entity.Entity#getTexture()
+	 */
+	@Override
+	public ITexture getTexture() {
 		return null;
 	}
 }

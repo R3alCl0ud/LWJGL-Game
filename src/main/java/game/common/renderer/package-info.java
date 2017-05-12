@@ -3,4 +3,4 @@
  * 
  * @author Perry Berman
  */
-package game.common.render;
+package game.common.renderer;

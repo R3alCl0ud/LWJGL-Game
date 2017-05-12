@@ -3,6 +3,7 @@ package game.entity;
 import org.lwjgl.opengl.GL11;
 
 import game.render.Resource;
+import game.render.texture.ITexture;
 
 /**
  * @author Perry Berman
@@ -29,6 +30,15 @@ public class EntityTriangles extends Entity {
 
 	@Override
 	public Resource getResourceLocation() {
+		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see game.entity.Entity#getTexture()
+	 */
+	@Override
+	public ITexture getTexture() {
 		return null;
 	}
 }

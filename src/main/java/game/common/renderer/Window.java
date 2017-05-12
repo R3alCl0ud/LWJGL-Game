@@ -1,4 +1,4 @@
-package game.common.render;
+package game.common.renderer;
 
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;

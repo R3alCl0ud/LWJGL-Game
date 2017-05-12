@@ -2,6 +2,7 @@ package game.render.texture;
 
 import static org.lwjgl.stb.STBImage.stbi_set_flip_vertically_on_load;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
@@ -20,7 +21,15 @@ public class ItemTexture extends AbstractTexture {
 		IntBuffer h = BufferUtils.createIntBuffer(1);
 		IntBuffer comp = BufferUtils.createIntBuffer(1);
 		stbi_set_flip_vertically_on_load(true);
-		ByteBuffer buf = STBImage.stbi_load(resource.toURL().getPath(), w, h, comp, 4);
+		ByteBuffer buf = STBImage.stbi_load(resource.getPath(), w, h, comp, 4);
+		if (buf == null) {
+			try {
+				buf = STBImage.stbi_load(resource.getFile().getPath(), w, h, comp, 4);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
 		if (buf == null) {
 			throw new RuntimeException("MISSING TEXTURES");
 		}
