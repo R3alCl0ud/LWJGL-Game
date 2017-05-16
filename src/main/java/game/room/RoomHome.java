@@ -47,8 +47,8 @@ public class RoomHome extends Room {
 	}
 
 	@Override
-	public Entity[] getEntities() {
-		return entities.toArray(new Entity[0]);
+	public List<Entity> getEntities() {
+		return entities;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package game.room;
 
+import java.util.List;
+
 import game.common.renderer.IRenderer;
 import game.common.renderer.TileRenderer;
 import game.common.renderer.entity.EntityRenderer;
@@ -33,7 +35,7 @@ public abstract class Room {
 	}
 	
 	public void renderEntities() {
-		Entity[] entities = getEntities();
+		List<Entity> entities = getEntities();
 		for (Entity entity : entities) {
 			entityRenderer.renderAt(entity, entity.getPosX(), entity.getPosY(), 32, 32, entity.getYaw());
 		}
@@ -48,7 +50,7 @@ public abstract class Room {
 	
 	public abstract Tile[][] getTiles();
 	
-	public abstract Entity[] getEntities();
+	public abstract List<Entity> getEntities();
 	
 	public abstract void addEntity(Entity entity);
 }
