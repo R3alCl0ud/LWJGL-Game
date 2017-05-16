@@ -1,7 +1,7 @@
 package game.common.objects;
 
-import game.entity.room.Room;
-import game.entity.tile.Tile;
+import game.room.Room;
+import game.tile.Tile;
 
 public interface IPlayer extends ILiving {
 

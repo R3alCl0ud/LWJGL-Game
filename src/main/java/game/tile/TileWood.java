@@ -1,4 +1,4 @@
-package game.entity.tile;
+package game.tile;
 
 /**
  * @author Perry Berman

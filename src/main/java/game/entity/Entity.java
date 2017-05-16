@@ -9,7 +9,7 @@ import game.renderer.texture.ITexture;
 public abstract class Entity {
 	
 	protected int posX, posY;
-	private float yaw;
+	protected float yaw;
 	
 	public Entity() {
 		posX = 0;

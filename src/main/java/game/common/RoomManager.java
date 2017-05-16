@@ -3,7 +3,7 @@ package game.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import game.entity.room.Room;
+import game.room.Room;
 
 /**
  * @author Perry Berman
