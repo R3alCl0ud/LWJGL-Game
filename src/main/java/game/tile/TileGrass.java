@@ -9,4 +9,8 @@ public class TileGrass extends Tile {
 		setName("grass");
 	}
 
+	public boolean isSolid() {
+		return false;
+	}
+
 }

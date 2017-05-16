@@ -36,7 +36,6 @@ public class TileRenderer implements IRenderer<Tile> {
 	
 	@Override
 	public void renderAt(Tile t, int x, int y, int w, int h, float yaw) {
-		// System.out.println(h / -32f);
 		ITexture texture = t.getTexture();
 		GL11.glViewport(x, y, w, h);
 		GL11.glLoadIdentity();

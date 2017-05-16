@@ -25,7 +25,7 @@ public abstract class Room {
 	public void drawTiles() {
 		Tile[][] tiles = getTiles();
 		int a = tiles.length, b = tiles[0].length, c = a * b;
-		int hw = 32;
+		int hw = 64;
 		for (int i = 0; i < c; i++) {
 			Tile tile = tiles[i / a][i % b];
 			tileRenderer.renderAt(tile, hw * (i / a), hw * (i % b), hw, hw, tile.getYaw());
