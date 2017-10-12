@@ -43,12 +43,13 @@ import game.common.ItemRegistry;
 import game.common.RoomManager;
 import game.common.TextureManager;
 import game.common.item.Item;
-import game.common.renderer.IRenderer;
-import game.common.renderer.entity.EntityRenderer;
+import game.common.render.IRenderer;
+import game.common.render.entity.EntityRenderer;
+import game.common.render.room.RoomRenderer;
 import game.entity.Entity;
 import game.entity.player.EntityPlayer;
-import game.renderer.Resource;
-import game.renderer.texture.Texture;
+import game.render.Resource;
+import game.render.texture.Texture;
 import game.room.Room;
 import game.room.RoomHome;
 import game.tile.Tile;
@@ -63,6 +64,7 @@ public class Index implements Runnable {
 	private Room current;
 	private EntityPlayer player;
 	private IRenderer<Entity> playerRenderer;
+	private IRenderer<Room> roomRenderer;
 
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
@@ -75,6 +77,7 @@ public class Index implements Runnable {
 		current = new RoomHome();
 		player = new EntityPlayer("Player 1", 20);
 		playerRenderer = new EntityRenderer();
+		roomRenderer = new RoomRenderer();
 		RoomManager.registerRoom(current);
 
 		loop();
@@ -98,7 +101,8 @@ public class Index implements Runnable {
 		GLFWErrorCallback.createPrint(System.err).set();
 
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
-		if (!glfwInit()) throw new IllegalStateException("Unable to initialize GLFW");
+		if (!glfwInit())
+			throw new IllegalStateException("Unable to initialize GLFW");
 
 		// Configure GLFW
 		glfwDefaultWindowHints(); // optional, the current window hints are
@@ -110,11 +114,12 @@ public class Index implements Runnable {
 
 		// Create the window
 		window = glfwCreateWindow(510, 510, "AN RPG", NULL, NULL);
-		if (window == NULL) throw new RuntimeException("Failed to create the GLFW window");
+		if (window == NULL)
+			throw new RuntimeException("Failed to create the GLFW window");
 
 		/*
-		 * Setup a key callback. It will be called every time a key is pressed,
-		 * repeated or released.
+		 * Setup a key callback. It will be called every time a key is pressed, repeated
+		 * or released.
 		 */
 		glfwSetKeyCallback(window, new GLFWKeyCallback() {
 
@@ -126,17 +131,25 @@ public class Index implements Runnable {
 					// We will detect this in the rendering loop
 					glfwSetWindowShouldClose(window, true);
 				} else if (key == GLFW.GLFW_KEY_W) {
-					if (action == GLFW.GLFW_PRESS) up = true;
-					if (action == GLFW.GLFW_RELEASE) up = false;
+					if (action == GLFW.GLFW_PRESS)
+						up = true;
+					if (action == GLFW.GLFW_RELEASE)
+						up = false;
 				} else if (key == GLFW.GLFW_KEY_S) {
-					if (action == GLFW.GLFW_PRESS) down = true;
-					if (action == GLFW.GLFW_RELEASE) down = false;
+					if (action == GLFW.GLFW_PRESS)
+						down = true;
+					if (action == GLFW.GLFW_RELEASE)
+						down = false;
 				} else if (key == GLFW.GLFW_KEY_D) {
-					if (action == GLFW.GLFW_PRESS) right = true;
-					if (action == GLFW.GLFW_RELEASE) right = false;
+					if (action == GLFW.GLFW_PRESS)
+						right = true;
+					if (action == GLFW.GLFW_RELEASE)
+						right = false;
 				} else if (key == GLFW.GLFW_KEY_A) {
-					if (action == GLFW.GLFW_PRESS) left = true;
-					if (action == GLFW.GLFW_RELEASE) left = false;
+					if (action == GLFW.GLFW_PRESS)
+						left = true;
+					if (action == GLFW.GLFW_RELEASE)
+						left = false;
 				}
 				// lastKeyCheck = currentTime;
 			}
@@ -173,11 +186,10 @@ public class Index implements Runnable {
 
 	private void loop() {
 		/*
-		 * This line is critical for LWJGL's interoperation with GLFW's OpenGL
-		 * context, or any context that is managed externally. LWJGL
-		 * detects the context that is current in the current thread, creates
-		 * the GLCapabilities instance and makes the OpenGL bindings
-		 * available for use.
+		 * This line is critical for LWJGL's interoperation with GLFW's OpenGL context,
+		 * or any context that is managed externally. LWJGL detects the context that is
+		 * current in the current thread, creates the GLCapabilities instance and makes
+		 * the OpenGL bindings available for use.
 		 */
 
 		// Set the clear color
@@ -211,8 +223,7 @@ public class Index implements Runnable {
 	}
 
 	private void doDraw() {
-		current.drawTiles();
-		current.renderEntities();
+		roomRenderer.draw(current);
 		playerRenderer.renderAt(player, player.getPosX(), player.getPosY(), 64, 128, player.getYaw());
 		playerMovement();
 	}
@@ -239,7 +250,8 @@ public class Index implements Runnable {
 					player.setPosY((int) (player.getPosY() - 3d));
 				}
 			}
-			if (player.getPosY() < 0) player.setPosY(0);
+			if (player.getPosY() < 0)
+				player.setPosY(0);
 		}
 		if (left && !right && player.getPosX() > 0) {
 			System.out.println("current: " + player.standingOn(current));

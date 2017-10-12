@@ -18,6 +18,7 @@ public class RoomHome extends Room {
 
 	private Tile[][] tiles = new Tile[16][16];
 	private List<Entity> entities;
+	private Tile ground = new TileGrass();
 
 	public RoomHome() {
 		super();
@@ -54,5 +55,24 @@ public class RoomHome extends Room {
 	@Override
 	public void addEntity(Entity entity) {
 		entities.add(entity);
+	}
+
+	@Override
+	public Tile getGround() {
+		return ground;
+	}
+
+	public void setGround(Tile ground) {
+		this.ground = ground;
+	}
+
+	@Override
+	public int getHeight() {
+		return 16;
+	}
+
+	@Override
+	public int getWidth() {
+		return 16;
 	}
 }

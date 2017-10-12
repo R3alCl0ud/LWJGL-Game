@@ -4,8 +4,8 @@ import java.util.List;
 
 import game.common.objects.IInventory;
 import game.common.objects.IItem;
-import game.renderer.Resource;
-import game.renderer.texture.ITexture;
+import game.render.Resource;
+import game.render.texture.ITexture;
 
 /**
  * @author Perry Berman

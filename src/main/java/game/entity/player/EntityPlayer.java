@@ -3,8 +3,8 @@ package game.entity.player;
 import game.common.TextureManager;
 import game.common.objects.IPlayer;
 import game.entity.Entity;
-import game.renderer.Resource;
-import game.renderer.texture.ITexture;
+import game.render.Resource;
+import game.render.texture.ITexture;
 import game.room.Room;
 import game.tile.Tile;
 

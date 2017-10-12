@@ -1,6 +1,6 @@
 package game.common.item;
 
-import game.renderer.Resource;
+import game.render.Resource;
 
 public class ItemJar extends Item {
 	

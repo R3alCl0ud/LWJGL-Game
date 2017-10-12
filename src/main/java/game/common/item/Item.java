@@ -5,7 +5,7 @@ import game.common.RoomManager;
 import game.common.objects.IItem;
 import game.entity.Entity;
 import game.entity.item.EntityItem;
-import game.renderer.Resource;
+import game.render.Resource;
 
 /**
  * @author Perry Berman

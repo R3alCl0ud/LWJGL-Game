@@ -3,7 +3,7 @@ package game.common;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.renderer.texture.ITexture;
+import game.render.texture.ITexture;
 
 /**
  * @author Perry Berman

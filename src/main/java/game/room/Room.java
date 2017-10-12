@@ -2,11 +2,12 @@ package game.room;
 
 import java.util.List;
 
-import game.common.renderer.IRenderer;
-import game.common.renderer.TileRenderer;
-import game.common.renderer.entity.EntityRenderer;
+import game.common.render.IRenderer;
+import game.common.render.entity.EntityRenderer;
+import game.common.render.tile.TileRenderer;
 import game.entity.Entity;
 import game.tile.Tile;
+import game.tile.TileDoor;
 
 /**
  * Abstract class for everyroom in the game
@@ -18,10 +19,13 @@ public abstract class Room {
 	protected int num;
 	private IRenderer<Tile> tileRenderer;
 	private IRenderer<Entity> entityRenderer;
+	private Tile[] structures;
 	
 	public Room() {
 		tileRenderer = new TileRenderer();
 		entityRenderer = new EntityRenderer();
+		structures = new Tile[1];
+		structures[0] = new TileDoor();
 	}
 	
 	public void drawTiles() {
@@ -48,9 +52,32 @@ public abstract class Room {
 		return this.num;
 	}
 	
+	public Tile getGround() {
+		return null;
+	}
+	
+	/**
+	 * Returns the rooms height in number of tiles
+	 * 
+	 * @return the room's height
+	 */
+	public abstract int getHeight();
+	
+	/**
+	 * Returns the rooms width in number of tiles
+	 * 
+	 * @return the room's width
+	 */
+	public abstract int getWidth();
+	
 	public abstract Tile[][] getTiles();
 	
 	public abstract List<Entity> getEntities();
 	
 	public abstract void addEntity(Entity entity);
+
+	public Tile[] getStructures() {
+		return structures;
+	}
+
 }

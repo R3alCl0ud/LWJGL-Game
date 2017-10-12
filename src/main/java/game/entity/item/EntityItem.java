@@ -3,8 +3,8 @@ package game.entity.item;
 import game.common.TextureManager;
 import game.common.objects.IItem;
 import game.entity.Entity;
-import game.renderer.Resource;
-import game.renderer.texture.ITexture;
+import game.render.Resource;
+import game.render.texture.ITexture;
 
 public class EntityItem extends Entity {
 	
