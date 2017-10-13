@@ -14,41 +14,26 @@ public class TileDoorRenderer implements IRenderer<TileDoor> {
 
 	@Override
 	public void draw(TileDoor t) {
-		// TODO Auto-generated method stub
-		System.out.println("drawing door");
-		ITexture texture = TextureManager.getTexture("door_bottom");
-		texture.bind();
-		GL11.glViewport(64 * 8, 64 * 8, 64, 128);
+//		System.out.println("drawing door");
+		ITexture texture = TextureManager.getTexture("door");
+//		ITexture texture2 = TextureManager.getTexture("door_top");
+		GL11.glLoadIdentity();
+		GL11.glViewport(432, 432, 96, 192);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glPushMatrix();
+		texture.bind();
 		GL11.glBegin(GL11.GL_POLYGON);
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex2f(0.0f, 0.0f);
 
 		glTexCoord2f(1.0f, 0.0f);
-		glVertex2f(texture.getWidth(), 0.0f);
+		glVertex2f(1f, 0.0f);
 
 		glTexCoord2f(1.0f,1f);
-		glVertex2f(texture.getWidth(), texture.getHeight());
+		glVertex2f(1f, 1f);
 
 		glTexCoord2f(0.0f, 1f);
-		glVertex2f(0.0f, texture.getHeight());
-		GL11.glEnd();
-		GL11.glPopMatrix();
-		ITexture texture2 = TextureManager.getTexture("door_top");
-		texture2.bind();
-		GL11.glPushMatrix();
-		GL11.glBegin(GL11.GL_POLYGON);
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex2f(0.0f, 0.0f);
-
-		glTexCoord2f(1.0f, 0.0f);
-		glVertex2f(texture2.getWidth(), 0.0f);
-
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex2f(texture2.getWidth(), texture2.getHeight());
-
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex2f(0.0f, texture2.getHeight());
+		glVertex2f(0.0f, 1f);
 		GL11.glEnd();
 		GL11.glPopMatrix();
 	}

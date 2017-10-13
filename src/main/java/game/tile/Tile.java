@@ -18,6 +18,7 @@ public class Tile {
 		TextureManager.registerTexture("water", new Texture(new Resource("game", "texture/tile/water.png")));
 		TextureManager.registerTexture("window", new Texture(new Resource("game", "texture/tile/window.png")));
 		TextureManager.registerTexture("wood", new Texture(new Resource("game", "texture/tile/wood.png")));
+		TextureManager.registerTexture("door", new Texture(new Resource("game", "texture/tile/door.png")));
 		TextureManager.registerTexture("door_top", new Texture(new Resource("game", "texture/tile/door_top.png")));
 		TextureManager.registerTexture("door_bottom", new Texture(new Resource("game", "texture/tile/door_bottom.png")));
 	}

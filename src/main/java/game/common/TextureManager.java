@@ -20,6 +20,7 @@ public class TextureManager {
 	}
 	
 	public static void registerTexture(String name, ITexture texture) {
+		System.out.printf("[TextureManager] [DEBUG]: Registered texture: %s.png\n", name);
 		instance.textures.put(name, texture);
 	}
 	
