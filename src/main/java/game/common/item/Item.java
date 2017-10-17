@@ -1,10 +1,10 @@
 package game.common.item;
 
-import game.common.ItemRegistry;
+import game.client.registry.ItemRegistry;
 import game.common.RoomManager;
+import game.common.entity.Entity;
+import game.common.entity.item.EntityItem;
 import game.common.objects.IItem;
-import game.entity.Entity;
-import game.entity.item.EntityItem;
 import game.render.Resource;
 
 /**

@@ -1,6 +1,6 @@
 package game.common.objects;
 
-import game.entity.Entity;
+import game.common.entity.Entity;
 import game.render.Resource;
 
 public interface IItem {

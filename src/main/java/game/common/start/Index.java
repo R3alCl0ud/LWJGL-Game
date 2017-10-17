@@ -39,20 +39,20 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 
-import game.common.ItemRegistry;
+import game.client.registry.ItemRegistry;
+import game.client.render.IRenderer;
+import game.client.render.entity.EntityRenderer;
+import game.client.render.room.RoomRenderer;
 import game.common.RoomManager;
 import game.common.TextureManager;
+import game.common.entity.Entity;
+import game.common.entity.player.EntityPlayer;
 import game.common.item.Item;
-import game.common.render.IRenderer;
-import game.common.render.entity.EntityRenderer;
-import game.common.render.room.RoomRenderer;
-import game.entity.Entity;
-import game.entity.player.EntityPlayer;
+import game.common.tile.Tile;
+import game.common.world.room.Room;
+import game.common.world.room.RoomHome;
 import game.render.Resource;
 import game.render.texture.Texture;
-import game.room.Room;
-import game.room.RoomHome;
-import game.tile.Tile;
 
 public class Index implements Runnable {
 
@@ -72,6 +72,7 @@ public class Index implements Runnable {
 		init();
 		Item.registerItems();
 		Tile.registerTextures();
+		Tile.registerTiles();
 		TextureManager.registerTexture("Jar", new Texture(ItemRegistry.getItem("Jar").getResourceLocation()));
 		TextureManager.registerTexture("player", new Texture(new Resource("game", "texture/entity/player.png")));
 		current = new RoomHome();
