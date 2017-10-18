@@ -249,7 +249,7 @@ public class Index implements Runnable {
 			// System.out.println("up: " + player.getUpTile(current));
 			// if (player.getUpTile(current).isFloor() &&
 			// !player.getUpTile(current).isSolid()) {
-			if (left || right) {
+			if ((left && !right) || (right && !left)) {
 				player.setPosY((int) (player.getPosY() + (3.5d / 1.25d)));
 			} else {
 				player.setPosY((int) (player.getPosY() + 3.5d));
@@ -260,7 +260,7 @@ public class Index implements Runnable {
 			// System.out.println("down: " + player.getDownTile(current));
 			// if (player.getDownTile(current).isFloor() &&
 			// !player.getDownTile(current).isSolid()) {
-			if (left || right) {
+			if ((left && !right) || (right && !left)) {
 				player.setPosY((int) (player.getPosY() - (3d / 2d)));
 			} else {
 				player.setPosY((int) (player.getPosY() - 3d));
@@ -274,7 +274,7 @@ public class Index implements Runnable {
 			// System.out.println("left: " + player.getLeftTile(current));
 			// if (player.getLeftTile(current).isFloor() &&
 			// !player.getLeftTile(current).isSolid()) {
-			if (up || down) {
+			if ((up && !down) || (down && !up)) {
 				player.setPosX((int) (player.getPosX() - (2d / 1.5d)));
 			} else {
 				player.setPosX((int) (player.getPosX() - 3d));
@@ -285,7 +285,7 @@ public class Index implements Runnable {
 			// System.out.println("right: " + player.getRightTile(current));
 			// if (player.getRightTile(current).isFloor() &&
 			// !player.getRightTile(current).isSolid()) {
-			if (up || down) {
+			if ((up && !down) || (down && !up)) {
 				player.setPosX((int) (player.getPosX() + (3.5d / 1.25d)));
 			} else {
 				player.setPosX((int) (player.getPosX() + 3.5d));

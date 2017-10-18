@@ -1,3 +1,7 @@
 
 *.log
+/target/*
+target/*
+target/classes/META-INF/maven/test/game/pom.properties
+target/classes/META-INF/MANIFEST.MF
 /target/
