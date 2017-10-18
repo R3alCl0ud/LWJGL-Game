@@ -42,7 +42,7 @@ public class RoomHome extends Room {
 				tiles[x][y] = new TileGrass();
 			}
 		}
-		this.getStructures().add(new StructureHouse(0, 0));
+		this.getStructures().add(new StructureHouse(4, 4));
 	}
 
 	public Tile[][] getTiles() {
@@ -70,11 +70,11 @@ public class RoomHome extends Room {
 
 	@Override
 	public int getHeight() {
-		return 16;
+		return 64;
 	}
 
 	@Override
 	public int getWidth() {
-		return 16;
+		return 64;
 	}
 }

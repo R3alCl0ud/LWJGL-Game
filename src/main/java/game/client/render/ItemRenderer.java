@@ -54,4 +54,10 @@ public class ItemRenderer implements IRenderer<IItem> {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void renderAt(IItem t, int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 }

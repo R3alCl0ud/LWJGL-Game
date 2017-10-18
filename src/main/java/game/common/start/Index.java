@@ -78,7 +78,7 @@ public class Index implements Runnable {
 		current = new RoomHome();
 		player = new EntityPlayer("Player 1", 20);
 		playerRenderer = new EntityRenderer();
-		roomRenderer = new RoomRenderer();
+		roomRenderer = new RoomRenderer(player);
 		RoomManager.registerRoom(current);
 
 		loop();
@@ -225,55 +225,70 @@ public class Index implements Runnable {
 
 	private void doDraw() {
 		roomRenderer.draw(current);
-		playerRenderer.renderAt(player, player.getPosX(), player.getPosY(), 64, 128, player.getYaw());
+		int x = player.getPosX(), y = player.getPosY();
+		if (x > 15 * 32 && x < (64 * (current.getWidth() - 8)) - 30) {
+			x = 15 * 32;
+		} else if (x > (64 * (current.getWidth() - 8)) - 32) {
+			x %= 1024;
+		}
+		if (y > 15 * 32 && y < (64 * (current.getHeight() - 8)) - 32) {
+			y = 15 * 32;
+		} else if (y > 64 * (current.getHeight() - 8) - 32) {
+			y %= 1024;
+		}
+		playerRenderer.renderAt(player, x, y, 64, 128, player.getYaw());
 		playerMovement();
 	}
 
 	private void playerMovement() {
-		int hw = 1020;
-		if (up && !down && player.getPosY() <= hw - 128) {
-			System.out.println("current: " + player.standingOn(current));
-			System.out.println("up: " + player.getUpTile(current));
-			if (player.getUpTile(current).isFloor() && !player.getUpTile(current).isSolid()) {
-				if (left || right) {
-					player.setPosY((int) (player.getPosY() + (3.5d / 1.25d)));
-				} else {
-					player.setPosY((int) (player.getPosY() + 3.5d));
-				}
+		// int hw = 1020;
+		if (up && !down && player.getPosY() <= 64 * (current.getHeight() - 2)) {
+			// System.out.println("current: " + player.standingOn(current));
+			// System.out.println("up: " + player.getUpTile(current));
+			// if (player.getUpTile(current).isFloor() &&
+			// !player.getUpTile(current).isSolid()) {
+			if (left || right) {
+				player.setPosY((int) (player.getPosY() + (3.5d / 1.25d)));
+			} else {
+				player.setPosY((int) (player.getPosY() + 3.5d));
 			}
+			// }
 		} else if (down && !up && player.getPosY() > 0) {
-			System.out.println("current: " + player.standingOn(current));
-			System.out.println("down: " + player.getDownTile(current));
-			if (player.getDownTile(current).isFloor() && !player.getDownTile(current).isSolid()) {
-				if (left || right) {
-					player.setPosY((int) (player.getPosY() - (3d / 2d)));
-				} else {
-					player.setPosY((int) (player.getPosY() - 3d));
-				}
+			// System.out.println("current: " + player.standingOn(current));
+			// System.out.println("down: " + player.getDownTile(current));
+			// if (player.getDownTile(current).isFloor() &&
+			// !player.getDownTile(current).isSolid()) {
+			if (left || right) {
+				player.setPosY((int) (player.getPosY() - (3d / 2d)));
+			} else {
+				player.setPosY((int) (player.getPosY() - 3d));
 			}
+			// }
 			if (player.getPosY() < 0)
 				player.setPosY(0);
 		}
 		if (left && !right && player.getPosX() > 0) {
-			System.out.println("current: " + player.standingOn(current));
-			System.out.println("left: " + player.getLeftTile(current));
-			if (player.getLeftTile(current).isFloor() && !player.getLeftTile(current).isSolid()) {
-				if (up || down) {
-					player.setPosX((int) (player.getPosX() - (2d / 1.5d)));
-				} else {
-					player.setPosX((int) (player.getPosX() - 3d));
-				}
+			// System.out.println("current: " + player.standingOn(current));
+			// System.out.println("left: " + player.getLeftTile(current));
+			// if (player.getLeftTile(current).isFloor() &&
+			// !player.getLeftTile(current).isSolid()) {
+			if (up || down) {
+				player.setPosX((int) (player.getPosX() - (2d / 1.5d)));
+			} else {
+				player.setPosX((int) (player.getPosX() - 3d));
 			}
-		} else if (right && !left && player.getPosX() < hw - 64) {
-			System.out.println("current: " + player.standingOn(current));
-			System.out.println("right: " + player.getRightTile(current));
-			if (player.getRightTile(current).isFloor() && !player.getRightTile(current).isSolid()) {
-				if (up || down) {
-					player.setPosX((int) (player.getPosX() + (3.5d / 1.25d)));
-				} else {
-					player.setPosX((int) (player.getPosX() + 3.5d));
-				}
+			// }
+		} else if (right && !left && player.getPosX() < 64 * (current.getWidth() - 1)) {
+			// System.out.println("current: " + player.standingOn(current));
+			// System.out.println("right: " + player.getRightTile(current));
+			// if (player.getRightTile(current).isFloor() &&
+			// !player.getRightTile(current).isSolid()) {
+			if (up || down) {
+				player.setPosX((int) (player.getPosX() + (3.5d / 1.25d)));
+			} else {
+				player.setPosX((int) (player.getPosX() + 3.5d));
 			}
+			// }
 		}
 	}
 

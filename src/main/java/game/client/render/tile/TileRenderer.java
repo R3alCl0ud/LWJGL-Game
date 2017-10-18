@@ -71,4 +71,10 @@ public class TileRenderer implements IRenderer<Tile> {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void renderAt(Tile t, int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 }

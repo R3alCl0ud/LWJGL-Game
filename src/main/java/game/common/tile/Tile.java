@@ -2,6 +2,8 @@ package game.common.tile;
 
 import game.client.registry.TileRegistry;
 import game.client.render.IRenderer;
+import game.client.render.RenderManager;
+import game.client.render.tile.TileRenderer;
 import game.common.TextureManager;
 import game.render.Resource;
 import game.render.texture.ITexture;
@@ -13,6 +15,7 @@ import game.render.texture.Texture;
 public class Tile {
 
 	public static Tile grass, door, wall, water, window, wood;
+	private static IRenderer<Tile> renderer = new TileRenderer();
 
 	public static void registerTextures() {
 		TextureManager.registerTexture("grass", new Texture(new Resource("game", "texture/tile/grass.png")));
@@ -34,6 +37,10 @@ public class Tile {
 		TileRegistry.registerTile(water = new TileWater(), water.getName());
 		TileRegistry.registerTile(window = new TileWindow(), window.getName());
 		TileRegistry.registerTile(wood = new TileWood(), wood.getName());
+	}
+
+	public Tile() {
+		RenderManager.registerRenderer(this.getClass(), renderer);
 	}
 
 	private String name;
@@ -61,7 +68,7 @@ public class Tile {
 	}
 
 	public IRenderer<? extends Tile> getRenderer() {
-		return null;
+		return renderer;
 	}
 
 	public float getYaw() {

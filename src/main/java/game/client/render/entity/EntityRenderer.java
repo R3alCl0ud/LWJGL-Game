@@ -78,4 +78,10 @@ public class EntityRenderer implements IRenderer<Entity> {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void renderAt(Entity t, int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 }
