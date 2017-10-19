@@ -10,18 +10,18 @@ import io.discloader.game.common.world.room.Room;
 import io.discloader.game.common.world.structure.Structure;
 
 public class RoomRenderer implements IRenderer<Room> {
-	
+
 	// private IRenderer<Tile> tileRenderer;
 	private IRenderer<Entity> entityRenderer;
 	private EntityPlayer player;
-	private boolean tc = false;
-	
+	private boolean tc = true;
+
 	public RoomRenderer(EntityPlayer player) {
 		// tileRenderer = new TileRenderer();
 		entityRenderer = new EntityRenderer();
 		this.player = player;
 	}
-	
+
 	@Override
 	public void draw(Room room) {
 		Tile ground = room.getGround();
@@ -29,12 +29,12 @@ public class RoomRenderer implements IRenderer<Room> {
 		for (int i = 0; true; i++) {
 			int x = multi * (i / a);
 			int y = multi * (i % b);
-			
-			if (player.getPosX() > multi * 7 && player.getPosX() < multi * (b - 8)) {
-				x -= (player.getPosX() - (multi * 7));
+
+			if (player.getPosX() >= (multi * 7.5) && player.getPosX() <= multi * (b - 8.5)) {
+				x -= (player.getPosX() - (multi * 7.5));
 			}
-			if (player.getPosY() > (multi * 8) - 4 && player.getPosY() < multi * (b - 8)) {
-				y -= (player.getPosY() - (multi * 8));
+			if (player.getPosY() >= (multi * 8) && player.getPosY() <= multi * (b - 8.5)) {
+				y -= Math.abs(player.getPosY() - (multi * 8));
 			}
 			// if (y > multi * 16)
 			// continue;
@@ -53,7 +53,9 @@ public class RoomRenderer implements IRenderer<Room> {
 			Structure s = room.getStructures().get(i);
 			for (int n = 0; n < s.getHeight(); n++) {
 				String r = s.getRow(n);
-				if (player.getPosX() > multi * ((s.getWidth() + s.getPosX()) * 2) || player.getPosY() > multi * ((s.getHeight() + s.getPosY()) * 2)) break;
+				if (player.getPosX() > multi * ((s.getWidth() + s.getPosX()) * 2)
+						|| player.getPosY() > multi * ((s.getHeight() + s.getPosY()) * 2))
+					break;
 				for (int t = 0; t < s.getWidth(); t++) {
 					if (r.charAt(t) == ' ') {
 						continue;
@@ -64,10 +66,10 @@ public class RoomRenderer implements IRenderer<Room> {
 					}
 					int x = multi * (t + s.getPosX());
 					int y = multi * (n + s.getPosY());
-					if (player.getPosX() > (multi * 7) && player.getPosX() < multi * (b - 8)) {
-						x -= (player.getPosX() - (multi * 7));
+					if (player.getPosX() > (multi * 7.5) && player.getPosX() < multi * (b - 8)) {
+						x -= (player.getPosX() - (multi * 7.5));
 					}
-					if (player.getPosY() > (multi * 8) - 4 && player.getPosY() < multi * (b - 8)) {
+					if (player.getPosY() > (multi * 8) && player.getPosY() < multi * (b - 8)) {
 						y -= (player.getPosY() - (multi * 8));
 					}
 					if (y > multi * 16)
@@ -78,31 +80,35 @@ public class RoomRenderer implements IRenderer<Room> {
 				}
 			}
 		}
-		
+		for (int i = 0; i < room.getEntities().size(); i++) {
+			Entity entity = room.getEntities().get(i);
+			// System.out.println(entity.getClass().getName());
+			entityRenderer.renderAt(entity, entity.getPosX(), entity.getPosY(), multi, multi, entity.getYaw());
+		}
 	}
-	
+
 	@Override
 	public void renderAt(Room t, int x, int y, int w, int h, float yaw) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void draw() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void renderAt() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void renderAt(Room t, int x, int y) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }

@@ -1,6 +1,6 @@
 package io.discloader.game.common.entity.item;
 
-import io.discloader.game.common.TextureManager;
+import io.discloader.game.client.registry.TextureRegistry;
 import io.discloader.game.common.entity.Entity;
 import io.discloader.game.common.objects.IItem;
 import io.discloader.game.render.Resource;
@@ -18,7 +18,7 @@ public class EntityItem extends Entity {
 	
 	@Override
 	public ITexture getTexture() {
-		return TextureManager.getTexture(item.getName());
+		return TextureRegistry.getTexture(item.getName());
 	}
 	
 	@Override

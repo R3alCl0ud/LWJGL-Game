@@ -1,6 +1,6 @@
 package io.discloader.game.common.entity.player;
 
-import io.discloader.game.common.TextureManager;
+import io.discloader.game.client.registry.TextureRegistry;
 import io.discloader.game.common.entity.Entity;
 import io.discloader.game.common.objects.IPlayer;
 import io.discloader.game.common.tile.Tile;
@@ -67,7 +67,7 @@ public class EntityPlayer extends Entity implements IPlayer {
 
 	@Override
 	public ITexture getTexture() {
-		return TextureManager.getTexture("player");
+		return TextureRegistry.getTexture("player");
 	}
 
 	@Override

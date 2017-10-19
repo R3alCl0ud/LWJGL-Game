@@ -25,6 +25,8 @@ import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glVertex2f;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -40,19 +42,21 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 
 import io.discloader.game.client.registry.ItemRegistry;
+import io.discloader.game.client.registry.TextureRegistry;
 import io.discloader.game.client.render.IRenderer;
 import io.discloader.game.client.render.entity.EntityRenderer;
 import io.discloader.game.client.render.room.RoomRenderer;
 import io.discloader.game.common.RoomManager;
-import io.discloader.game.common.TextureManager;
 import io.discloader.game.common.entity.Entity;
 import io.discloader.game.common.entity.player.EntityPlayer;
 import io.discloader.game.common.item.Item;
+import io.discloader.game.common.objects.IItem;
 import io.discloader.game.common.tile.Tile;
 import io.discloader.game.common.world.room.Room;
 import io.discloader.game.common.world.room.RoomHome;
 import io.discloader.game.render.GLRU;
 import io.discloader.game.render.Resource;
+import io.discloader.game.render.texture.ITexture;
 import io.discloader.game.render.texture.Texture;
 
 public class Index implements Runnable {
@@ -67,6 +71,8 @@ public class Index implements Runnable {
 	private IRenderer<Entity> playerRenderer;
 	private IRenderer<Room> roomRenderer;
 	private final int multi = GLRU.getMultiplier();
+	private ITexture characters;
+	private final float charSize = 0.03125f;
 
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
@@ -75,14 +81,19 @@ public class Index implements Runnable {
 		Item.registerItems();
 		Tile.registerTextures();
 		Tile.registerTiles();
-		TextureManager.registerTexture("Jar", new Texture(ItemRegistry.getItem("Jar").getResourceLocation()));
-		TextureManager.registerTexture("player", new Texture(new Resource("game", "texture/entity/player.png")));
+		TextureRegistry.registerTexture("Jar", new Texture(ItemRegistry.getItem("Jar").getResourceLocation()));
+		TextureRegistry.registerTexture("player", new Texture(new Resource("game", "texture/entity/player.png")));
 		current = new RoomHome();
+		characters = TextureRegistry.getTexture("characters");
 		player = new EntityPlayer("Player 1", 20);
 		playerRenderer = new EntityRenderer();
 		roomRenderer = new RoomRenderer(player);
 		RoomManager.registerRoom(current);
 
+		IItem jar = ItemRegistry.getItem("Jar");
+		if (jar != null) {
+			jar.createEntity(10, 10, 0);
+		}
 		loop();
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(window);
@@ -238,8 +249,35 @@ public class Index implements Runnable {
 		} else if (y > multi * (current.getHeight() - 8) - (multi / 2)) {
 			y %= (16 * multi);
 		}
+		renderCount();
 		playerRenderer.renderAt(player, x, y, multi, multi * 2, player.getYaw());
 		playerMovement();
+	}
+
+	private void renderCount() {
+		characters.bind();
+		for (int i = 0; i < 100; i++) {
+			GL11.glViewport(multi * (i / 10), multi * (i % 10), multi, multi);
+			GL11.glLoadIdentity();
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			GL11.glPushMatrix();
+			// GL11.glRotatef(yaw, 0f, 0f, 1f);
+			GL11.glBegin(GL11.GL_POLYGON);
+			float right = charSize * (21 + (i / 10)), left = charSize * (20 + (i / 10));
+			glTexCoord2f(left, 0.9375f);
+			glVertex2f(-1f, -1f);
+
+			glTexCoord2f(right, 0.9375f);
+			glVertex2f(1.0f, -1.0f);
+
+			glTexCoord2f(right, 0.96875f);
+			glVertex2f(1f, 1f);
+
+			glTexCoord2f(left, 0.96875f);
+			glVertex2f(-1.0f, 1f);
+			GL11.glEnd();
+			GL11.glPopMatrix();
+		}
 	}
 
 	private void playerMovement() {

@@ -5,7 +5,7 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
 
 import org.lwjgl.opengl.GL11;
 
-import io.discloader.game.common.TextureManager;
+import io.discloader.game.client.registry.TextureRegistry;
 import io.discloader.game.common.objects.IItem;
 import io.discloader.game.render.texture.ITexture;
 
@@ -13,7 +13,7 @@ public class ItemRenderer implements IRenderer<IItem> {
 
 	@Override
 	public void draw(IItem item) {
-		ITexture texture = TextureManager.getTexture(item.getName());
+		ITexture texture = TextureRegistry.getTexture(item.getName());
 		texture.bind();
 		GL11.glLoadIdentity();
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
