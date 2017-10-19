@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -30,8 +31,13 @@ public class Texture extends AbstractTexture {
 			}
 		}
 		
+
 		if (buf == null) {
-			throw new RuntimeException("MISSING TEXTURES");
+			try {
+				buf = ByteBuffer.wrap(readAllBytes(resource));
+			} catch (IOException e) {
+				throw new RuntimeException("MISSING TEXTURES");
+			}
 		}
 		setWidth(w.get(0));
 		setHeight(h.get(0));
@@ -47,4 +53,16 @@ public class Texture extends AbstractTexture {
 		setParameter(GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 	}
 
+	/**
+	 * A more efficient readAllBytes method
+	 * 
+	 * @param resource
+	 * @return A byte array containing the resource's data
+	 * @throws IOException
+	 */
+	public static byte[] readAllBytes(Resource resource) throws IOException {
+		return IOUtils.toByteArray(resource.getResourceAsStream());
+	}
+	
 }
+
