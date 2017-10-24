@@ -44,6 +44,8 @@ import org.lwjgl.system.MemoryStack;
 import io.discloader.game.client.registry.ItemRegistry;
 import io.discloader.game.client.registry.TextureRegistry;
 import io.discloader.game.client.render.IRenderer;
+import io.discloader.game.client.render.RenderManager;
+import io.discloader.game.client.render.TextRenderer;
 import io.discloader.game.client.render.entity.EntityRenderer;
 import io.discloader.game.client.render.room.RoomRenderer;
 import io.discloader.game.common.RoomManager;
@@ -73,6 +75,8 @@ public class Index implements Runnable {
 	private final int multi = GLRU.getMultiplier();
 	private ITexture characters;
 	private final float charSize = 0.03125f;
+	private long lastFrameTime = 0, lastFPSShown = 0;
+	private int fps;
 
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
@@ -89,6 +93,7 @@ public class Index implements Runnable {
 		playerRenderer = new EntityRenderer();
 		roomRenderer = new RoomRenderer(player);
 		RoomManager.registerRoom(current);
+		RenderManager.registerRenderer(String.class, new TextRenderer());
 
 		IItem jar = ItemRegistry.getItem("Jar");
 		if (jar != null) {
@@ -249,9 +254,17 @@ public class Index implements Runnable {
 		} else if (y > multi * (current.getHeight() - 8) - (multi / 2)) {
 			y %= (16 * multi);
 		}
-		renderCount();
+		// renderCount();
 		playerRenderer.renderAt(player, x, y, multi, multi * 2, player.getYaw());
 		playerMovement();
+		long currentTime = System.currentTimeMillis(), deltaTime = currentTime - lastFrameTime;
+		lastFrameTime = currentTime;
+		lastFPSShown += deltaTime;
+		if (lastFPSShown > 100) {
+			fps = (int) (1000l / deltaTime);
+			lastFPSShown = 0;
+		}
+		RenderManager.getRenderer("").renderAt("FPS " + fps, 1, 15);
 	}
 
 	private void renderCount() {

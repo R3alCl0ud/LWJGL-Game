@@ -5,6 +5,7 @@ import io.discloader.game.common.entity.Entity;
 import io.discloader.game.common.objects.IPlayer;
 import io.discloader.game.common.tile.Tile;
 import io.discloader.game.common.world.room.Room;
+import io.discloader.game.render.GLRU;
 import io.discloader.game.render.Resource;
 import io.discloader.game.render.texture.ITexture;
 
@@ -12,6 +13,7 @@ public class EntityPlayer extends Entity implements IPlayer {
 
 	private String name;
 	private int xp;
+	private final int multi = GLRU.getMultiplier();
 
 	public EntityPlayer(String name, int xp) {
 		this.name = name;
@@ -40,19 +42,19 @@ public class EntityPlayer extends Entity implements IPlayer {
 	}
 
 	public float fY() {
-		return (posY / 64f);
+		return (posY / ((float) multi));
 	}
 
 	public float fX() {
-		return ((1f * posX) / 64f) + Math.round(((1f * posX) % 64f) / 64f);
+		return ((1f * posX) / ((float) multi)) + Math.round(((1f * posX) % ((float) multi)) / ((float) multi));
 	}
 
 	public int locY() {
-		return (posY / 64);
+		return (posY / multi);
 	}
 
 	public int locX() {
-		return (posX / 64) + ((((1f * posX) % 64f) / 64f) >= 0f ? 1 : 0);
+		return (posX / multi) + ((((1f * posX) % ((float) multi)) / ((float) multi)) >= 0f ? 1 : 0);
 	}
 
 	@Override
@@ -91,7 +93,7 @@ public class EntityPlayer extends Entity implements IPlayer {
 		if (locX() == 7 && locY() == 6) {
 			System.out.println(fX());
 		}
-		
+
 		return tiles[locX()][locY()];
 	}
 

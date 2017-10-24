@@ -36,8 +36,9 @@ public class RoomRenderer implements IRenderer<Room> {
 			if (player.getPosY() >= (multi * 8) && player.getPosY() <= multi * (b - 8.5)) {
 				y -= Math.abs(player.getPosY() - (multi * 8));
 			}
-			// if (y > multi * 16)
-			// continue;
+			if (x < multi * -1 || y < multi * -1) {
+				continue;
+			}
 			if (x > multi * 16) {
 				break;
 			}
@@ -82,8 +83,16 @@ public class RoomRenderer implements IRenderer<Room> {
 		}
 		for (int i = 0; i < room.getEntities().size(); i++) {
 			Entity entity = room.getEntities().get(i);
+			int x = multi * (entity.getPosX());
+			int y = multi * (entity.getPosY());
+			if (player.getPosX() > (multi * 7.5) && player.getPosX() < multi * (b - 8)) {
+				x -= (player.getPosX() - (multi * 7.5));
+			}
+			if (player.getPosY() > (multi * 8) && player.getPosY() < multi * (b - 8)) {
+				y -= (player.getPosY() - (multi * 8));
+			}
 			// System.out.println(entity.getClass().getName());
-			entityRenderer.renderAt(entity, entity.getPosX(), entity.getPosY(), multi, multi, entity.getYaw());
+			entityRenderer.renderAt(entity, x, y, multi, multi, entity.getYaw());
 		}
 	}
 
