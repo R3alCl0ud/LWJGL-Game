@@ -10,6 +10,7 @@ import io.discloader.game.common.entity.Entity;
 import io.discloader.game.common.tile.Tile;
 import io.discloader.game.common.tile.TileDoor;
 import io.discloader.game.common.world.structure.Structure;
+import io.discloader.game.render.GLRU;
 
 /**
  * Abstract class for everyroom in the game
@@ -22,6 +23,7 @@ public abstract class Room {
 	private IRenderer<Tile> tileRenderer;
 	private IRenderer<Entity> entityRenderer;
 	private List<Structure> structures;
+	protected final int multi = GLRU.getMultiplier();
 
 	public Room() {
 		tileRenderer = new TileRenderer();
@@ -79,6 +81,21 @@ public abstract class Room {
 
 	public List<Structure> getStructures() {
 		return structures;
+	}
+
+	public Structure getStructureAt(int x, int y) {
+		for (Structure s : structures) {
+			int l, r, t, b;
+			b = s.getPosY() * multi;
+			t = b + (s.getHeight() * multi);
+			l = s.getPosX() * multi;
+			r = l + (s.getWidth() * multi);
+			if (x < l || x > r || y < b || y > t)
+				continue;
+			return s;
+		}
+		return null;
+
 	}
 
 }

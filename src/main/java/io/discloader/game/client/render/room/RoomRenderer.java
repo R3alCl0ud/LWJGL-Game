@@ -54,7 +54,7 @@ public class RoomRenderer implements IRenderer<Room> {
 			Structure s = room.getStructures().get(i);
 			for (int n = 0; n < s.getHeight(); n++) {
 				String r = s.getRow(n);
-				if (player.getPosX() > multi * ((s.getWidth() + s.getPosX()) * 2)
+				if (player.getPosX() > multi * (((s.getWidth() * 2.5) + s.getPosX()))
 						|| player.getPosY() > multi * ((s.getHeight() + s.getPosY()) * 2))
 					break;
 				for (int t = 0; t < s.getWidth(); t++) {

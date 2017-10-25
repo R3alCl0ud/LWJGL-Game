@@ -11,7 +11,7 @@ import io.discloader.game.render.texture.ITexture;
 public class TextRenderer implements IRenderer<String> {
 
 	private ITexture characters = TextureRegistry.getTexture("characters");
-	private float height = 0.03125f, width = 0.03125f, numStart = 0.625f, spaceWidth = 0.0625f;
+	private float height = 0.03125f, width = 0.03125f, numStart = 0.59375f, spaceWidth = 0.0625f;
 	private float lowerStart = 0.8125f, offset = 0.015625f;
 
 	@Override
@@ -20,29 +20,42 @@ public class TextRenderer implements IRenderer<String> {
 		for (int i = 0; i < t.length(); i++) {
 			char c = t.charAt(i);
 			float left = offset, right = width, top = 1f, bottom = 1f - height;
+			int offsetY = 0;
 			if (c == ' ') {
 				continue;
 			} else if (c == '\n') {
 				y--;
 				continue;
 			} else if (c >= 'a' && c <= 'f') {
-				left = (offset / 2) + lowerStart + (width * (c - 'a'));
+				left = lowerStart + (width * (c - 'a'));
 				right = width + lowerStart + (width * (c - 'a'));
 			} else if (c >= 'g' && c <= 'z') {
 				top = bottom;
 				bottom -= height;
+				offsetY = -14;
 			} else if (c >= 'A' && c <= 'Z') {
-				left = (offset / 2) + (width * (c - 'A'));
+				left = (width * (c - 'A'));
 				right = (offset * 1.5f) + (width * (c - 'A'));
-			} else if (c >= '1' && c <= '9') {
+			} else if (c >= '0' && c <= '9') {
 				top = 0.96875f;
 				bottom = 0.9375f;
-				left = numStart + (width * ((c - '1')));
-				right = width + numStart + (width * ((c - '1')));
+				left = numStart + (width * ((c - '0')));
+				right = width + numStart + (width * ((c - '0')));
+				offsetY = -14;
+			} else if (c >= '!' && c <= '/') {
+				left = (width * ((c - '!')));
+				right = (width * ((c - ' ')));
+				offsetY = -2;
+			} else if (c >= ':' && c <= '?') {
+				top = height * 28;
+				bottom = height * 27;
+				left = (width * ((c - ':') + 15));
+				right = (width * ((c - ':') + 16));
+				offsetY = -12;
 			} else {
 				continue;
 			}
-			GL11.glViewport(multi * (x + i), multi * y, multi, multi);
+			GL11.glViewport((multi * (x + i)) - (24 * i), (multi * y) + offsetY, multi, multi);
 			GL11.glLoadIdentity();
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			GL11.glPushMatrix();

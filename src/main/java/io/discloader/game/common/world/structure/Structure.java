@@ -6,15 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 import io.discloader.game.common.tile.Tile;
+import io.discloader.game.render.GLRU;
 
 public class Structure {
 
 	private final List<String> rows;
 	private final Map<Character, Tile> tiles;
+	private final int multi = GLRU.getMultiplier();
 
 	public Structure() {
 		rows = new ArrayList<>();
 		tiles = new HashMap<>();
+		tiles.put(' ', Tile.Air);
 	}
 
 	public Structure addRows(String... rows) {
@@ -50,6 +53,15 @@ public class Structure {
 
 	public Tile getTile(char tileID) {
 		return tiles.get(tileID);
+	}
+
+	public Tile getTileAt(int x, int y) {
+		if (y / multi >= rows.size())
+			return Tile.Air;
+		String row = rows.get(y / multi);
+		if (row == null || x / multi >= row.length() || x / multi < 0)
+			return Tile.Air;
+		return getTile(row.charAt(x / multi));
 	}
 
 	public int getWidth() {

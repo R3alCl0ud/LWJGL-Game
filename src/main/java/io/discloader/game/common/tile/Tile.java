@@ -14,7 +14,7 @@ import io.discloader.game.render.texture.Texture;
  */
 public class Tile {
 
-	public static Tile grass, door, wall, water, window, wood;
+	public static Tile grass, door, wall, water, window, wood, Air;
 	private static IRenderer<Tile> renderer = new TileRenderer();
 
 	public static void registerTextures() {
@@ -31,6 +31,7 @@ public class Tile {
 	}
 
 	public static void registerTiles() {
+		TileRegistry.registerTile(Air = new TileAir(), "air");
 		TileRegistry.registerTile(grass = new TileGrass(), grass.getName());
 		TileRegistry.registerTile(door = new TileDoor(), door.getName());
 		TileRegistry.registerTile(wall = new TileWall(), wall.getName());

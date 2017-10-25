@@ -5,6 +5,7 @@ import io.discloader.game.common.entity.Entity;
 import io.discloader.game.common.objects.IPlayer;
 import io.discloader.game.common.tile.Tile;
 import io.discloader.game.common.world.room.Room;
+import io.discloader.game.common.world.structure.Structure;
 import io.discloader.game.render.GLRU;
 import io.discloader.game.render.Resource;
 import io.discloader.game.render.texture.ITexture;
@@ -79,48 +80,45 @@ public class EntityPlayer extends Entity implements IPlayer {
 
 	@Override
 	public Tile getLeftTile(Room room) {
-		Tile[][] tiles = room.getTiles();
-		int b = tiles[0].length;
-		int x = locX() - 1 < 0 ? 0 : locX() - 1, y = locY() % b;
-		return tiles[x][y];
+		Structure s = room.getStructureAt(getPosX() - multi, getPosY());
+		if (s == null)
+			return room.getGround();
+		return s.getTileAt(getPosX() - ((s.getPosX()) * multi), getPosY() - (s.getPosY() * multi));
 	}
 
 	@Override
 	public Tile standingOn(Room room) {
-		Tile[][] tiles = room.getTiles();
-		System.out.println(locX());
-		System.out.println((((1f * posX) % 64f) / 64f) >= 0.5f);
-		if (locX() == 7 && locY() == 6) {
-			System.out.println(fX());
-		}
-
-		return tiles[locX()][locY()];
+		Structure s = room.getStructureAt(getPosX(), getPosY());
+		if (s == null)
+			return room.getGround();
+		return s.getTileAt(getPosX() - (s.getPosX() * multi), getPosY() - (s.getPosY() * multi));
 	}
 
 	@Override
 	public Tile getRightTile(Room room) {
-		Tile[][] tiles = room.getTiles();
-		int a = tiles.length, b = tiles[0].length;
-		int x = (locX()) % a, y = locY() % b >= 0 ? locY() % b : 0;
-		return tiles[x][y];
+		Structure s = room.getStructureAt((int) (getPosX() + (multi * 1.5)), getPosY());
+		if (s == null)
+			return room.getGround();
+		return s.getTileAt(getPosX() - ((s.getPosX() - 1) * multi), getPosY() - (s.getPosY() * multi));
 	}
 
 	@Override
 	public Tile getUpTile(Room room) {
-		Tile[][] tiles = room.getTiles();
-		int b = tiles[0].length;
-		int x = locX(), y = ((locY()) + 1) >= b ? b - 1 : ((locY()) + 1);
-		// System.out.printf("(%d, %d)\n", x, y);
-		return tiles[x][y];
+		Structure s = room.getStructureAt(getPosX() + (multi / 2), getPosY() + multi);
+		if (s == null)
+			return room.getGround();
+		int x = getPosX() - (s.getPosX() * multi);
+		if (x % multi > 0 && getRightTile(room) == Tile.Air)
+			x += multi;
+		return s.getTileAt(x, getPosY() - ((s.getPosY() - 1) * multi));
 	}
 
 	@Override
 	public Tile getDownTile(Room room) {
-		Tile[][] tiles = room.getTiles();
-		// int a = tiles.length, b = tiles[0].length;
-		int x = locX(), y = ((locY()) - 1) < 0 ? 0 : ((locY()) - 1);
-		// System.out.printf("(%d, %d)\n", x, y);
-		return tiles[x][y];
+		Structure s = room.getStructureAt(getPosX(), getPosY() - multi);
+		if (s == null)
+			return room.getGround();
+		return s.getTileAt(getPosX() - (s.getPosX() * multi), (getPosY() - ((s.getPosY()) * multi)) - (multi / 2));
 	}
 
 }

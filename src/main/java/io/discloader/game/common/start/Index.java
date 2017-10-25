@@ -264,7 +264,7 @@ public class Index implements Runnable {
 			fps = (int) (1000l / deltaTime);
 			lastFPSShown = 0;
 		}
-		RenderManager.getRenderer("").renderAt("FPS " + fps, 1, 15);
+		RenderManager.getRenderer("").renderAt("FPS: " + fps, 1, 15);
 	}
 
 	private void renderCount() {
@@ -297,51 +297,49 @@ public class Index implements Runnable {
 		// int hw = 1020;
 		if (up && !down && player.getPosY() <= multi * (current.getHeight() - 2)) {
 			// System.out.println("current: " + player.standingOn(current));
-			// System.out.println("up: " + player.getUpTile(current));
-			// if (player.getUpTile(current).isFloor() &&
-			// !player.getUpTile(current).isSolid()) {
-			if ((left && !right) || (right && !left)) {
-				player.setPosY((int) (player.getPosY() + (3.5d / 1.25d)));
-			} else {
-				player.setPosY((int) (player.getPosY() + 3.5d));
+			System.out.println("up: " + player.getUpTile(current));
+			if (player.getUpTile(current) != null && player.getUpTile(current).isFloor()
+					&& !player.getUpTile(current).isSolid()) {
+				if ((left && !right) || (right && !left)) {
+					player.setPosY((int) (player.getPosY() + (3.5d / 1.25d)));
+				} else {
+					player.setPosY((int) (player.getPosY() + 3.5d));
+				}
 			}
-			// }
 		} else if (down && !up && player.getPosY() > 0) {
 			// System.out.println("current: " + player.standingOn(current));
-			// System.out.println("down: " + player.getDownTile(current));
-			// if (player.getDownTile(current).isFloor() &&
-			// !player.getDownTile(current).isSolid()) {
-			if ((left && !right) || (right && !left)) {
-				player.setPosY((int) (player.getPosY() - (3d / 2d)));
-			} else {
-				player.setPosY((int) (player.getPosY() - 3d));
+			System.out.println("down: " + player.getDownTile(current));
+			if (player.getDownTile(current).isFloor() && !player.getDownTile(current).isSolid()) {
+				if ((left && !right) || (right && !left)) {
+					player.setPosY((int) (player.getPosY() - (3d / 2d)));
+				} else {
+					player.setPosY((int) (player.getPosY() - 3d));
+				}
 			}
-			// }
 			if (player.getPosY() < 0)
 				player.setPosY(0);
 		}
 		if (left && !right && player.getPosX() > 0) {
 			// System.out.println("current: " + player.standingOn(current));
 			// System.out.println("left: " + player.getLeftTile(current));
-			// if (player.getLeftTile(current).isFloor() &&
-			// !player.getLeftTile(current).isSolid()) {
-			if ((up && !down) || (down && !up)) {
-				player.setPosX((int) (player.getPosX() - (2d / 1.5d)));
-			} else {
-				player.setPosX((int) (player.getPosX() - 3d));
+			if (player.getLeftTile(current).isFloor() && !player.getLeftTile(current).isSolid()) {
+				if ((up && !down) || (down && !up)) {
+					player.setPosX((int) (player.getPosX() - (2d / 1.5d)));
+				} else {
+					player.setPosX((int) (player.getPosX() - 3d));
+				}
 			}
-			// }
 		} else if (right && !left && player.getPosX() < multi * (current.getWidth() - 1)) {
-			// System.out.println("current: " + player.standingOn(current));
-			// System.out.println("right: " + player.getRightTile(current));
-			// if (player.getRightTile(current).isFloor() &&
-			// !player.getRightTile(current).isSolid()) {
-			if ((up && !down) || (down && !up)) {
-				player.setPosX((int) (player.getPosX() + (3.5d / 1.25d)));
-			} else {
-				player.setPosX((int) (player.getPosX() + 3.5d));
+			System.out.println("current: " + player.standingOn(current));
+			System.out.println("right: " + player.getRightTile(current));
+			if (player.getRightTile(current) != null && player.getRightTile(current).isFloor()
+					&& !player.getRightTile(current).isSolid()) {
+				if ((up && !down) || (down && !up)) {
+					player.setPosX((int) (player.getPosX() + (3.5d / 1.25d)));
+				} else {
+					player.setPosX((int) (player.getPosX() + 3.5d));
+				}
 			}
-			// }
 		}
 	}
 

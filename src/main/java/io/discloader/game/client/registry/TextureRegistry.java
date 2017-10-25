@@ -20,7 +20,7 @@ public class TextureRegistry {
 	public TextureRegistry() {
 		textures = new HashMap<>();
 		System.out.printf("[TextureRegistry] [INFO]: Registered texture: %s.png\n", "characters");
-		textures.put("characters", new Texture(new Resource("game", "texture/characters.png")));
+		textures.put("characters", new Texture(new Resource("game", "texture/font.png")));
 	}
 
 	public static void registerTexture(String name, ITexture texture) {
