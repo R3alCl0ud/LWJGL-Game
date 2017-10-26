@@ -1,7 +1,7 @@
 package io.discloader.game.common.item;
 
 import io.discloader.game.client.registry.ItemRegistry;
-import io.discloader.game.common.RoomManager;
+import io.discloader.game.client.registry.RoomManager;
 import io.discloader.game.common.entity.Entity;
 import io.discloader.game.common.entity.item.EntityItem;
 import io.discloader.game.common.objects.IItem;

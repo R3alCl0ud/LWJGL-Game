@@ -42,13 +42,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 
 import io.discloader.game.client.registry.ItemRegistry;
+import io.discloader.game.client.registry.RoomManager;
 import io.discloader.game.client.registry.TextureRegistry;
 import io.discloader.game.client.render.IRenderer;
 import io.discloader.game.client.render.RenderManager;
 import io.discloader.game.client.render.TextRenderer;
 import io.discloader.game.client.render.entity.EntityRenderer;
 import io.discloader.game.client.render.room.RoomRenderer;
-import io.discloader.game.common.RoomManager;
 import io.discloader.game.common.entity.Entity;
 import io.discloader.game.common.entity.player.EntityPlayer;
 import io.discloader.game.common.item.Item;
@@ -69,7 +69,7 @@ public class Index implements Runnable {
 	// Event Polling Thread
 	// private Thread evntPoll;
 	private Room current;
-	private EntityPlayer player;
+	private static EntityPlayer player;
 	private IRenderer<Entity> playerRenderer;
 	private IRenderer<Room> roomRenderer;
 	private final int multi = GLRU.getMultiplier();
@@ -93,6 +93,8 @@ public class Index implements Runnable {
 		playerRenderer = new EntityRenderer();
 		roomRenderer = new RoomRenderer(player);
 		RoomManager.registerRoom(current);
+		RenderManager.registerRenderer(Room.class, roomRenderer);
+		RenderManager.registerRenderer(EntityPlayer.class, playerRenderer);
 		RenderManager.registerRenderer(String.class, new TextRenderer());
 
 		IItem jar = ItemRegistry.getItem("Jar");
@@ -242,29 +244,33 @@ public class Index implements Runnable {
 	}
 
 	private void doDraw() {
-		roomRenderer.draw(current);
-		int x = player.getPosX(), y = player.getPosY();
-		if (x > 15 * (multi / 2) && x < (multi * (current.getWidth() - 8)) - (multi / 2)) {
-			x = 15 * (multi / 2);
-		} else if (x > (multi * (current.getWidth() - 8)) - (multi / 2)) {
-			x %= (16 * multi);
-		}
-		if (y > 15 * (multi / 2) && y < (multi * (current.getHeight() - 8)) - (multi / 2)) {
-			y = 15 * (multi / 2);
-		} else if (y > multi * (current.getHeight() - 8) - (multi / 2)) {
-			y %= (16 * multi);
-		}
-		// renderCount();
-		playerRenderer.renderAt(player, x, y, multi, multi * 2, player.getYaw());
 		playerMovement();
-		long currentTime = System.currentTimeMillis(), deltaTime = currentTime - lastFrameTime;
-		lastFrameTime = currentTime;
-		lastFPSShown += deltaTime;
-		if (lastFPSShown > 100) {
-			fps = (int) (1000l / deltaTime);
-			lastFPSShown = 0;
-		}
-		RenderManager.getRenderer("").renderAt("FPS: " + fps, 1, 15);
+		RenderManager.beginRender();
+		// roomRenderer.draw(current);
+		// int x = player.getPosX(), y = player.getPosY();
+		// if (x > 15 * (multi / 2) && x < (multi * (current.getWidth() - 8)) - (multi /
+		// 2)) {
+		// x = 15 * (multi / 2);
+		// } else if (x > (multi * (current.getWidth() - 8)) - (multi / 2)) {
+		// x %= (16 * multi);
+		// }
+		// if (y > 15 * (multi / 2) && y < (multi * (current.getHeight() - 8)) - (multi
+		// / 2)) {
+		// y = 15 * (multi / 2);
+		// } else if (y > multi * (current.getHeight() - 8) - (multi / 2)) {
+		// y %= (16 * multi);
+		// }
+		// playerRenderer.renderAt(player, x, y, multi, multi * 2, player.getYaw());
+		// playerMovement();
+		// long currentTime = System.currentTimeMillis(), deltaTime = currentTime -
+		// lastFrameTime;
+		// lastFrameTime = currentTime;
+		// lastFPSShown += deltaTime;
+		// if (lastFPSShown > 100) {
+		// fps = (int) (1000l / deltaTime);
+		// lastFPSShown = 0;
+		// }
+		// RenderManager.getRenderer("").renderAt("FPS: " + fps, 5, 15);
 	}
 
 	private void renderCount() {
@@ -295,9 +301,17 @@ public class Index implements Runnable {
 
 	private void playerMovement() {
 		// int hw = 1020;
+		if (up || down || left || right) {
+			System.out.println("current: " + player.standingOn(current).getName());
+			System.out.println("up: " + player.getUpTile(current).getName());
+			System.out.println("down: " + player.getDownTile(current).getName());
+			System.out.println("left: " + player.getLeftTile(current).getName());
+			System.out.println("right: " + player.getRightTile(current).getName());
+		}
+
 		if (up && !down && player.getPosY() <= multi * (current.getHeight() - 2)) {
 			// System.out.println("current: " + player.standingOn(current));
-			System.out.println("up: " + player.getUpTile(current));
+			// System.out.println("up: " + player.getUpTile(current));
 			if (player.getUpTile(current) != null && player.getUpTile(current).isFloor()
 					&& !player.getUpTile(current).isSolid()) {
 				if ((left && !right) || (right && !left)) {
@@ -308,7 +322,7 @@ public class Index implements Runnable {
 			}
 		} else if (down && !up && player.getPosY() > 0) {
 			// System.out.println("current: " + player.standingOn(current));
-			System.out.println("down: " + player.getDownTile(current));
+			// System.out.println("down: " + player.getDownTile(current));
 			if (player.getDownTile(current).isFloor() && !player.getDownTile(current).isSolid()) {
 				if ((left && !right) || (right && !left)) {
 					player.setPosY((int) (player.getPosY() - (3d / 2d)));
@@ -330,8 +344,8 @@ public class Index implements Runnable {
 				}
 			}
 		} else if (right && !left && player.getPosX() < multi * (current.getWidth() - 1)) {
-			System.out.println("current: " + player.standingOn(current));
-			System.out.println("right: " + player.getRightTile(current));
+			// System.out.println("current: " + player.standingOn(current));
+			// System.out.println("right: " + player.getRightTile(current));
 			if (player.getRightTile(current) != null && player.getRightTile(current).isFloor()
 					&& !player.getRightTile(current).isSolid()) {
 				if ((up && !down) || (down && !up)) {
@@ -345,6 +359,10 @@ public class Index implements Runnable {
 
 	public static void main(String[] args) {
 		new Index().run();
+	}
+
+	public static EntityPlayer getPlayer() {
+		return player;
 	}
 
 }

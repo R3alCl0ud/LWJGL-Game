@@ -70,7 +70,7 @@ public class EntityPlayer extends Entity implements IPlayer {
 
 	@Override
 	public ITexture getTexture() {
-		return TextureRegistry.getTexture("player");
+		return TextureRegistry.getTexture("door");
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class EntityPlayer extends Entity implements IPlayer {
 		if (s == null)
 			return room.getGround();
 		int x = getPosX() - (s.getPosX() * multi);
-		if (x % multi > 0 && getRightTile(room) == Tile.Air)
+		if (x % multi > 0)
 			x += multi;
 		return s.getTileAt(x, getPosY() - ((s.getPosY() - 1) * multi));
 	}

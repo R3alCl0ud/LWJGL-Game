@@ -17,6 +17,7 @@ public class TextRenderer implements IRenderer<String> {
 	@Override
 	public void renderAt(String t, int x, int y) {
 		characters.bind();
+		int drawX = x * multi, drawY = (multi * y);
 		for (int i = 0; i < t.length(); i++) {
 			char c = t.charAt(i);
 			float left = offset, right = width, top = 1f, bottom = 1f - height;
@@ -55,7 +56,9 @@ public class TextRenderer implements IRenderer<String> {
 			} else {
 				continue;
 			}
-			GL11.glViewport((multi * (x + i)) - (24 * i), (multi * y) + offsetY, multi, multi);
+			drawX = (multi * (x + i)) - (24 * i);
+//			System.out.printf();
+			GL11.glViewport(drawX, drawY + offsetY, multi, multi);
 			GL11.glLoadIdentity();
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			GL11.glPushMatrix();
@@ -79,6 +82,7 @@ public class TextRenderer implements IRenderer<String> {
 	@Override
 	public void renderAt(String t, int x, int y, int w, int h, float yaw) {
 		characters.bind();
+		int drawX = x * multi;
 		for (int i = 0; i < t.length(); i++) {
 			char c = t.charAt(i);
 			float left = 0f, right = width, top = 1f, bottom = 1f - height;
