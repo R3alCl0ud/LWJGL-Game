@@ -302,18 +302,22 @@ public class Index implements Runnable {
 	private void playerMovement() {
 		// int hw = 1020;
 		if (up || down || left || right) {
-			System.out.println("current: " + player.standingOn(current).getName());
-			System.out.println("up: " + player.getUpTile(current).getName());
-			System.out.println("down: " + player.getDownTile(current).getName());
-			System.out.println("left: " + player.getLeftTile(current).getName());
-			System.out.println("right: " + player.getRightTile(current).getName());
+			System.out.println("current: " + player.getTileAt(current, 0, 0).getName());
+			System.out.println("up right: " + player.getTileAt(current, 1, 1).getName());
+			System.out.println("up: " + player.getTileAt(current, 0, 1).getName());
+			System.out.println("up left: " + player.getTileAt(current, -1, 1).getName());
+			System.out.println("left: " + player.getTileAt(current, -1, 0).getName());
+			System.out.println("down left: " + player.getTileAt(current, -1, -1).getName());
+			System.out.println("down: " + player.getTileAt(current, 0, -1).getName());
+			System.out.println("down right: " + player.getTileAt(current, 1, -1).getName());
+			System.out.println("right: " + player.getTileAt(current, 1, 0).getName());
+
 		}
 
 		if (up && !down && player.getPosY() <= multi * (current.getHeight() - 2)) {
 			// System.out.println("current: " + player.standingOn(current));
 			// System.out.println("up: " + player.getUpTile(current));
-			if (player.getUpTile(current) != null && player.getUpTile(current).isFloor()
-					&& !player.getUpTile(current).isSolid()) {
+			if (player.getUpTile(current) != null && (player.getTileAt(current, 0, 1) == null || !player.getTileAt(current, 0, 1).isSolid())) {
 				if ((left && !right) || (right && !left)) {
 					player.setPosY((int) (player.getPosY() + (3.5d / 1.25d)));
 				} else {
@@ -344,16 +348,20 @@ public class Index implements Runnable {
 				}
 			}
 		} else if (right && !left && player.getPosX() < multi * (current.getWidth() - 1)) {
-			// System.out.println("current: " + player.standingOn(current));
-			// System.out.println("right: " + player.getRightTile(current));
-			if (player.getRightTile(current) != null && player.getRightTile(current).isFloor()
-					&& !player.getRightTile(current).isSolid()) {
-				if ((up && !down) || (down && !up)) {
-					player.setPosX((int) (player.getPosX() + (3.5d / 1.25d)));
-				} else {
-					player.setPosX((int) (player.getPosX() + 3.5d));
-				}
+			Tile ur = player.getTileAt(current, 1, 1), r = player.getTileAt(current, 1, 0), ul = player.getTileAt(current, -1, 1), u = player.getTileAt(current, 1, 1);
+			if ((r == null || !r.isSolid()) && ((u == null || !u.isSolid()) && (ur == null || !ur.isSolid()) && (ul == null || !ul.isSolid()))) {
+				System.out.println("hmm");
 			}
+			if (r != null && r.isFloor())
+
+				if ((r == null && (ur == null || !ur.isSolid())) || (r.isFloor() && (ur == null || !ur.isSolid()))) {
+					if ((up && !down) || (down && !up)) {
+						player.setPosX((int) (player.getPosX() + (3.5d / 1.25d)));
+					} else {
+						player.setPosX((int) (player.getPosX() + 3.5d));
+					}
+				}
+			// }
 		}
 	}
 

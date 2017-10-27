@@ -121,4 +121,13 @@ public class EntityPlayer extends Entity implements IPlayer {
 		return s.getTileAt(getPosX() - (s.getPosX() * multi), (getPosY() - ((s.getPosY()) * multi)) - (multi / 2));
 	}
 
+	public Tile getTileAt(Room room, int x, int y) {
+		Structure s = room.getStructureAt(getPosX() + (multi * x), getPosY() + (multi * y));
+		if (s == null)
+			return room.getGround();
+
+		Tile tile = s.getTileAt(getPosX() - ((s.getPosX() - x) * multi), getPosY() - ((s.getPosY() - y) * multi));
+		return tile == null ? Tile.Air : tile;
+	}
+
 }

@@ -19,6 +19,6 @@ public class TileWall extends Tile {
 	}
 
 	public boolean isFloor() {
-		return true;
+		return false;
 	}
 }

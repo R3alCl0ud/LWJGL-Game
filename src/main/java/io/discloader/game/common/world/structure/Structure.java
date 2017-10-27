@@ -17,7 +17,7 @@ public class Structure {
 	public Structure() {
 		rows = new ArrayList<>();
 		tiles = new HashMap<>();
-		tiles.put(' ', Tile.Air);
+		addTile(' ', Tile.Air);
 	}
 
 	public Structure addRows(String... rows) {
@@ -61,7 +61,7 @@ public class Structure {
 		String row = rows.get(y / multi);
 		if (row == null || x / multi >= row.length() || x / multi < 0)
 			return Tile.Air;
-		return getTile(row.charAt(x / multi));
+		return getTile(row.charAt(x / multi)) == null ? Tile.Air : getTile(row.charAt(x / multi));
 	}
 
 	public int getWidth() {

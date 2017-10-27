@@ -8,7 +8,7 @@ public interface IPlayer extends ILiving {
 	int getLevel();
 
 	int getXP();
-	
+
 	void giveXP(int xp);
 
 	void takeXP(int xp);
@@ -22,4 +22,6 @@ public interface IPlayer extends ILiving {
 	Tile getUpTile(Room room);
 
 	Tile getDownTile(Room room);
+
+	Tile getTileAt(Room room, int x, int y);
 }
