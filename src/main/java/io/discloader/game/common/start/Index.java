@@ -30,6 +30,7 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.awt.Rectangle;
 import java.nio.IntBuffer;
 
 import org.lwjgl.Version;
@@ -300,68 +301,85 @@ public class Index implements Runnable {
 	}
 
 	private void playerMovement() {
-		// int hw = 1020;
-		if (up || down || left || right) {
-			System.out.println("current: " + player.getTileAt(current, 0, 0).getName());
-			System.out.println("up right: " + player.getTileAt(current, 1, 1).getName());
-			System.out.println("up: " + player.getTileAt(current, 0, 1).getName());
-			System.out.println("up left: " + player.getTileAt(current, -1, 1).getName());
-			System.out.println("left: " + player.getTileAt(current, -1, 0).getName());
-			System.out.println("down left: " + player.getTileAt(current, -1, -1).getName());
-			System.out.println("down: " + player.getTileAt(current, 0, -1).getName());
-			System.out.println("down right: " + player.getTileAt(current, 1, -1).getName());
-			System.out.println("right: " + player.getTileAt(current, 1, 0).getName());
-
+		Tile c = player.getTileAt(current, 0, 0), ur = player.getTileAt(current, 1, 1);
+		Tile u = player.getTileAt(current, 0, 1), ul = player.getTileAt(current, -1, 1);
+		Tile l = player.getTileAt(current, -1, 0), dl = player.getTileAt(current, -1, -1);
+		Tile d = player.getTileAt(current, 0, -1), dr = player.getTileAt(current, 1, -1);
+		Tile r = player.getTileAt(current, 1, 0);
+//		if (up || down || left || right) {
+//			System.out.println("current: " + c.getName());
+//			System.out.println("up right: " + ur.getName());
+//			System.out.println("up: " + u.getName());
+//			System.out.println("up left: " + ul.getName());
+//			System.out.println("left: " + l.getName());
+//			System.out.println("down left: " + dl.getName());
+//			System.out.println("down: " + d.getName());
+//			System.out.println("down right: " + dr.getName());
+//			System.out.println("right: " + r.getName());
+//
+//		}
+		Rectangle playerRect = player.getRectangle(multi - 2, multi);
+		int yp = ((player.getPosY()) / multi) * multi, xp = ((player.getPosX()) / multi) * multi;
+		if (r.isSolid() && playerRect.intersects(r.getEntityAt(xp + multi, yp, multi, multi).getRectangle())) {
+			player.setPosX((player.getPosX() / multi) * multi);
+		}
+		if (l.isSolid() && playerRect.intersects(l.getEntityAt(xp - multi, yp, multi, multi).getRectangle())) {
+			player.setPosX(((player.getPosX() / multi) * multi) + multi);
+		}
+		
+		if (c.isSolid()) {
+			
 		}
 
 		if (up && !down && player.getPosY() <= multi * (current.getHeight() - 2)) {
-			// System.out.println("current: " + player.standingOn(current));
-			// System.out.println("up: " + player.getUpTile(current));
-			if (player.getUpTile(current) != null && (player.getTileAt(current, 0, 1) == null || !player.getTileAt(current, 0, 1).isSolid())) {
-				if ((left && !right) || (right && !left)) {
-					player.setPosY((int) (player.getPosY() + (3.5d / 1.25d)));
+			int y = ((player.getPosY() + multi) / multi) * multi, x = (player.getPosX() / multi) * multi;
+			playerRect.setLocation(player.getPosX(), (int) (player.getPosY() + 2d));
+			System.out.println(playerRect.intersects(ur.getEntityAt(x + multi, y, multi, multi).getRectangle()));
+			if ((!u.isSolid()) || !playerRect.intersects(u.getEntityAt(x, y, multi, multi).getRectangle())) {
+				if ((!r.isSolid() && ur.isSolid()) && playerRect.intersects(ur.getEntityAt(x + multi, y, multi, multi).getRectangle())) {
+					System.out.println("Can't step up");
 				} else {
-					player.setPosY((int) (player.getPosY() + 3.5d));
+					player.setPosY((int) (player.getPosY() + 2d));
 				}
 			}
 		} else if (down && !up && player.getPosY() > 0) {
-			// System.out.println("current: " + player.standingOn(current));
-			// System.out.println("down: " + player.getDownTile(current));
-			if (player.getDownTile(current).isFloor() && !player.getDownTile(current).isSolid()) {
-				if ((left && !right) || (right && !left)) {
-					player.setPosY((int) (player.getPosY() - (3d / 2d)));
+			int y = ((player.getPosY() - multi) / multi) * multi, x = (player.getPosX() / multi) * multi;
+			System.out.println(y);
+			playerRect.setLocation(player.getPosX(), (int) (player.getPosY() - 2d));
+			if ((!d.isSolid()) || !playerRect.intersects(d.getEntityAt(x, y, multi, multi).getRectangle())) {
+				if ((!r.isSolid() && dr.isSolid()) && playerRect.intersects(dr.getEntityAt(x + multi, y, multi, multi).getRectangle())) {
+
 				} else {
-					player.setPosY((int) (player.getPosY() - 3d));
+					player.setPosY((int) (player.getPosY() - 2d));
 				}
 			}
 			if (player.getPosY() < 0)
 				player.setPosY(0);
 		}
 		if (left && !right && player.getPosX() > 0) {
-			// System.out.println("current: " + player.standingOn(current));
-			// System.out.println("left: " + player.getLeftTile(current));
-			if (player.getLeftTile(current).isFloor() && !player.getLeftTile(current).isSolid()) {
-				if ((up && !down) || (down && !up)) {
-					player.setPosX((int) (player.getPosX() - (2d / 1.5d)));
+			int y = ((player.getPosY()) / multi) * multi, x = ((player.getPosX() - multi) / multi) * multi;
+			playerRect.setLocation((int) (player.getPosX() - 2d), player.getPosY());
+			if ((!l.isSolid()) || !playerRect.intersects(l.getEntityAt(x, y, multi, multi).getRectangle())) {
+				if (playerRect.intersects(ul.getEntityAt(x, y + multi, multi, multi).getRectangle()) && ul.isSolid()) {
+					System.out.println("can't step here L");
 				} else {
-					player.setPosX((int) (player.getPosX() - 3d));
+					player.setPosX((int) (player.getPosX() - 2d));
 				}
+			} else {
+				player.setPosX(((player.getPosX() / multi) * multi));
 			}
 		} else if (right && !left && player.getPosX() < multi * (current.getWidth() - 1)) {
-			Tile ur = player.getTileAt(current, 1, 1), r = player.getTileAt(current, 1, 0), ul = player.getTileAt(current, -1, 1), u = player.getTileAt(current, 1, 1);
-			if ((r == null || !r.isSolid()) && ((u == null || !u.isSolid()) && (ur == null || !ur.isSolid()) && (ul == null || !ul.isSolid()))) {
-				System.out.println("hmm");
-			}
-			if (r != null && r.isFloor())
-
-				if ((r == null && (ur == null || !ur.isSolid())) || (r.isFloor() && (ur == null || !ur.isSolid()))) {
-					if ((up && !down) || (down && !up)) {
-						player.setPosX((int) (player.getPosX() + (3.5d / 1.25d)));
-					} else {
-						player.setPosX((int) (player.getPosX() + 3.5d));
-					}
+			int y = ((player.getPosY()) / multi) * multi, x = ((player.getPosX() + multi) / multi) * multi;
+			playerRect.setLocation((int) (player.getPosX() + 2d), player.getPosY());
+			if ((!r.isSolid()) || !playerRect.intersects(r.getEntityAt(x, y, multi, multi).getRectangle())) {
+				if (playerRect.intersects(ur.getEntityAt(x, y + multi, multi, multi).getRectangle()) && ur.isSolid()) {
+					System.out.println("can't step here");
+				} else {
+					player.setPosX((int) (player.getPosX() + 2d));
 				}
-			// }
+			} else {
+				player.setPosX((player.getPosX() / multi) * multi);
+			}
 		}
 	}
 

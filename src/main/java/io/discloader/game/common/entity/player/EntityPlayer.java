@@ -70,7 +70,7 @@ public class EntityPlayer extends Entity implements IPlayer {
 
 	@Override
 	public ITexture getTexture() {
-		return TextureRegistry.getTexture("door");
+		return TextureRegistry.getTexture("player");
 	}
 
 	@Override

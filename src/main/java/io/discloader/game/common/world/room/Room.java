@@ -8,7 +8,6 @@ import io.discloader.game.client.render.entity.EntityRenderer;
 import io.discloader.game.client.render.tile.TileRenderer;
 import io.discloader.game.common.entity.Entity;
 import io.discloader.game.common.tile.Tile;
-import io.discloader.game.common.tile.TileDoor;
 import io.discloader.game.common.world.structure.Structure;
 import io.discloader.game.render.GLRU;
 
@@ -26,6 +25,7 @@ public abstract class Room {
 	protected final int multi = GLRU.getMultiplier();
 
 	public Room() {
+		// what ever I want to here
 		tileRenderer = new TileRenderer();
 		entityRenderer = new EntityRenderer();
 		structures = new ArrayList<>();

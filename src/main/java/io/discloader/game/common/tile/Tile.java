@@ -26,8 +26,7 @@ public class Tile {
 		TextureRegistry.registerTexture("wood", new Texture(new Resource("game", "texture/tile/wood.png")));
 		TextureRegistry.registerTexture("door", new Texture(new Resource("game", "texture/tile/door.png")));
 		TextureRegistry.registerTexture("door_top", new Texture(new Resource("game", "texture/tile/door_top.png")));
-		TextureRegistry.registerTexture("door_bottom",
-				new Texture(new Resource("game", "texture/tile/door_bottom.png")));
+		TextureRegistry.registerTexture("door_bottom", new Texture(new Resource("game", "texture/tile/door_bottom.png")));
 	}
 
 	public static void registerTiles() {
@@ -99,4 +98,9 @@ public class Tile {
 	public boolean isFloor() {
 		return true;
 	}
+
+	public TileEntity getEntityAt(int x, int y, int h, int w) {
+		return new TileEntity(x, y, h, w);
+	}
+
 }
