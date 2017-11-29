@@ -2,6 +2,7 @@ package io.discloader.game.client.render.entity;
 
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
+import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import org.lwjgl.opengl.GL11;
 
@@ -47,10 +48,10 @@ public class EntityRenderer implements IRenderer<Entity> {
 		ITexture texture = t.getTexture();
 		GL11.glLoadIdentity();
 		GL11.glViewport(x, y, w, h);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glPushMatrix();
 		texture.bind();
 		GL11.glRotatef(yaw, 0f, 0f, 1f);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glPushMatrix();
 		GL11.glBegin(GL11.GL_POLYGON);
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex2f(-1f, -1f);
@@ -82,6 +83,34 @@ public class EntityRenderer implements IRenderer<Entity> {
 	@Override
 	public void renderAt(Entity t, int x, int y) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void renderAt(Entity t, int x, int y, float z) {}
+
+	@Override
+	public void renderAt(Entity t, int x, int y, int w, int h, float yaw, float z) {
+		ITexture texture = t.getTexture();
+		GL11.glLoadIdentity();
+		GL11.glViewport(x, y, w, h);
+		texture.bind();
+		GL11.glRotatef(yaw, 0f, 0f, 1f);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glPushMatrix();
+		GL11.glBegin(GL11.GL_POLYGON);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(-1f, -1f, z);
+
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(1.0f, -1.0f, z);
+
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(1f, 1f, z);
+
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(-1.0f, 1f, z);
+		GL11.glEnd();
+		GL11.glPopMatrix();
 	}
 }

@@ -5,3 +5,12 @@ target/*
 target/classes/META-INF/maven/test/game/pom.properties
 target/classes/META-INF/MANIFEST.MF
 /target/
+*.DS_Store
+src/.DS_Store
+src/main/.DS_Store
+src/main/resources/.DS_Store
+src/main/resources/assets/game/.DS_Store
+src/main/resources/assets/game/texture/.DS_Store
+src/main/resources/assets/game/texture/tile/.DS_Store
+src/main/resources/assets/.DS_Store
+src/main/resources/.DS_Store

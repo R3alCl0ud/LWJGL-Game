@@ -2,6 +2,7 @@ package io.discloader.game.client.render.tile;
 
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
+import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import org.lwjgl.opengl.GL11;
 
@@ -76,7 +77,34 @@ public class TileDoorRenderer implements IRenderer<TileDoor> {
 	@Override
 	public void renderAt(TileDoor t, int x, int y) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void renderAt(TileDoor t, int x, int y, float z) {}
+
+	@Override
+	public void renderAt(TileDoor t, int x, int y, int w, int h, float yaw, float z) {
+		ITexture texture = TextureRegistry.getTexture("door");
+		GL11.glLoadIdentity();
+		GL11.glViewport(x, y, multi, multi * 2);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glPushMatrix();
+		texture.bind();
+		GL11.glBegin(GL11.GL_POLYGON);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(-1.0f, -1.0f, z);
+
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(1f, -1.0f, z);
+
+		glTexCoord2f(1.0f, 1f);
+		glVertex3f(1f, 1f, z);
+
+		glTexCoord2f(0.0f, 1f);
+		glVertex3f(-1.0f, 1f, z);
+		GL11.glEnd();
+		GL11.glPopMatrix();
 	}
 
 }

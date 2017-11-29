@@ -2,6 +2,7 @@ package io.discloader.game.client.render;
 
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
+import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import org.lwjgl.opengl.GL11;
 
@@ -60,4 +61,10 @@ public class ItemRenderer implements IRenderer<IItem> {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void renderAt(IItem t, int x, int y, float z) {}
+
+	@Override
+	public void renderAt(IItem t, int x, int y, int w, int h, float yaw, float z) {}
 }

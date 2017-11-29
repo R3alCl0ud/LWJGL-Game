@@ -76,8 +76,8 @@ public class Index implements Runnable {
 	private final int multi = GLRU.getMultiplier();
 	private ITexture characters;
 	private final float charSize = 0.03125f;
-	private long lastFrameTime = 0, lastFPSShown = 0;
-	private int fps;
+	// private long lastFrameTime = 0, lastFPSShown = 0;
+	// private int fps;
 
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
@@ -215,9 +215,10 @@ public class Index implements Runnable {
 		 */
 
 		// Set the clear color
-		GL11.glClearColor(1f, 1f, 1f, 1.0f);
+		GL11.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
 		glEnable(GL_TEXTURE_2D);
+		glEnable(GL11.GL_DEPTH_TEST);
 
 		System.out.println(player.getLeftTile(current));
 		System.out.println(player.getRightTile(current));
@@ -228,7 +229,7 @@ public class Index implements Runnable {
 		// the window or has pressed the ESCAPE key.
 		while (!glfwWindowShouldClose(window)) {
 			// clear the framebuffer
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			// Draw shit
 			doDraw();
 			// handle the players movement first, because it's more logical to
@@ -241,40 +242,16 @@ public class Index implements Runnable {
 			GLFW.glfwPollEvents();
 
 		}
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDisable(GL_TEXTURE_2D);
 	}
 
 	private void doDraw() {
 		playerMovement();
 		RenderManager.beginRender();
-		// roomRenderer.draw(current);
-		// int x = player.getPosX(), y = player.getPosY();
-		// if (x > 15 * (multi / 2) && x < (multi * (current.getWidth() - 8)) - (multi /
-		// 2)) {
-		// x = 15 * (multi / 2);
-		// } else if (x > (multi * (current.getWidth() - 8)) - (multi / 2)) {
-		// x %= (16 * multi);
-		// }
-		// if (y > 15 * (multi / 2) && y < (multi * (current.getHeight() - 8)) - (multi
-		// / 2)) {
-		// y = 15 * (multi / 2);
-		// } else if (y > multi * (current.getHeight() - 8) - (multi / 2)) {
-		// y %= (16 * multi);
-		// }
-		// playerRenderer.renderAt(player, x, y, multi, multi * 2, player.getYaw());
-		// playerMovement();
-		// long currentTime = System.currentTimeMillis(), deltaTime = currentTime -
-		// lastFrameTime;
-		// lastFrameTime = currentTime;
-		// lastFPSShown += deltaTime;
-		// if (lastFPSShown > 100) {
-		// fps = (int) (1000l / deltaTime);
-		// lastFPSShown = 0;
-		// }
-		// RenderManager.getRenderer("").renderAt("FPS: " + fps, 5, 15);
 	}
 
-	private void renderCount() {
+	protected void renderCount() {
 		characters.bind();
 		for (int i = 0; i < 100; i++) {
 			GL11.glViewport(multi * (i / 10), multi * (i % 10), multi, multi);
@@ -303,21 +280,19 @@ public class Index implements Runnable {
 	private void playerMovement() {
 		Tile c = player.getTileAt(current, 0, 0), ur = player.getTileAt(current, 1, 1);
 		Tile u = player.getTileAt(current, 0, 1), ul = player.getTileAt(current, -1, 1);
-		Tile l = player.getTileAt(current, -1, 0), dl = player.getTileAt(current, -1, -1);
+		Tile l = player.getTileAt(current, -1, 0), r = player.getTileAt(current, 1, 0);
 		Tile d = player.getTileAt(current, 0, -1), dr = player.getTileAt(current, 1, -1);
-		Tile r = player.getTileAt(current, 1, 0);
-//		if (up || down || left || right) {
-//			System.out.println("current: " + c.getName());
-//			System.out.println("up right: " + ur.getName());
-//			System.out.println("up: " + u.getName());
-//			System.out.println("up left: " + ul.getName());
-//			System.out.println("left: " + l.getName());
-//			System.out.println("down left: " + dl.getName());
-//			System.out.println("down: " + d.getName());
-//			System.out.println("down right: " + dr.getName());
-//			System.out.println("right: " + r.getName());
-//
-//		}
+		// if (up || down || left || right) {
+		// System.out.println("current: " + c.getName());
+		// System.out.println("up right: " + ur.getName());
+		// System.out.println("up: " + u.getName());
+		// System.out.println("up left: " + ul.getName());
+		// System.out.println("left: " + l.getName());
+		// System.out.println("down left: " + dl.getName());
+		// System.out.println("down: " + d.getName());
+		// System.out.println("down right: " + dr.getName());
+		// System.out.println("right: " + r.getName());
+		// }
 		Rectangle playerRect = player.getRectangle(multi - 2, multi);
 		int yp = ((player.getPosY()) / multi) * multi, xp = ((player.getPosX()) / multi) * multi;
 		if (r.isSolid() && playerRect.intersects(r.getEntityAt(xp + multi, yp, multi, multi).getRectangle())) {
@@ -326,9 +301,9 @@ public class Index implements Runnable {
 		if (l.isSolid() && playerRect.intersects(l.getEntityAt(xp - multi, yp, multi, multi).getRectangle())) {
 			player.setPosX(((player.getPosX() / multi) * multi) + multi);
 		}
-		
+
 		if (c.isSolid()) {
-			
+
 		}
 
 		if (up && !down && player.getPosY() <= multi * (current.getHeight() - 2)) {

@@ -17,7 +17,6 @@ public class RoomRenderer implements IRenderer<Room> {
 	private boolean tc = true;
 
 	public RoomRenderer(EntityPlayer player) {
-		// tileRenderer = new TileRenderer();
 		entityRenderer = new EntityRenderer();
 		this.player = player;
 	}
@@ -45,7 +44,7 @@ public class RoomRenderer implements IRenderer<Room> {
 			if (!tc) {
 				System.out.printf("(%d, %d)\n", x, y);
 			}
-			RenderManager.getRenderer(ground).renderAt(ground, x, y, multi, multi, ground.getYaw());
+			RenderManager.getRenderer(ground).renderAt(ground, x, y, multi, multi, ground.getYaw(), 0.2f);
 		}
 		if (!tc) {
 			tc = true;
@@ -62,7 +61,7 @@ public class RoomRenderer implements IRenderer<Room> {
 						continue;
 					}
 					Tile tile = s.getTile(r.charAt(t));
-					if (tile == null) {
+					if (tile == null || tile.getName().equals("Air")) {
 						continue;
 					}
 					int x = multi * (t + s.getPosX());
@@ -77,7 +76,7 @@ public class RoomRenderer implements IRenderer<Room> {
 						continue;
 					if (x > multi * 16)
 						break;
-					RenderManager.getRenderer(tile).renderAt(tile, x, y, multi, multi, tile.getYaw());
+					RenderManager.getRenderer(tile).renderAt(tile, x, y, multi, multi, tile.getYaw(), 0.05f);
 				}
 			}
 		}
@@ -92,7 +91,7 @@ public class RoomRenderer implements IRenderer<Room> {
 				y -= (player.getPosY() - (multi * 8));
 			}
 			// System.out.println(entity.getClass().getName());
-			entityRenderer.renderAt(entity, x, y, multi, multi, entity.getYaw());
+			entityRenderer.renderAt(entity, x, y, multi, multi, entity.getYaw(), 0f);
 		}
 	}
 
@@ -119,5 +118,11 @@ public class RoomRenderer implements IRenderer<Room> {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void renderAt(Room t, int x, int y, float z) {}
+
+	@Override
+	public void renderAt(Room t, int x, int y, int w, int h, float yaw, float z) {}
 
 }

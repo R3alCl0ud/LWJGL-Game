@@ -133,4 +133,10 @@ public class TextRenderer implements IRenderer<String> {
 
 	}
 
+	@Override
+	public void renderAt(String t, int x, int y, float z) {}
+
+	@Override
+	public void renderAt(String t, int x, int y, int w, int h, float yaw, float z) {}
+
 }

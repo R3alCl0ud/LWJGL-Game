@@ -12,6 +12,7 @@ public class StructureHouse extends Structure {
 		this.y = y;
 		addRows(" wwdww ", " ww ww ", " wwwww ", "rwwWwwr", "rrrrrrr", " rrrrr ", "  rrr  ", "   r   ");
 		addTile('w', Tile.wall).addTile('r', Tile.wood).addTile('W', Tile.window).addTile('d', Tile.door);
+		setDepth(3);
 	}
 
 	public int getPosX() {

@@ -13,6 +13,7 @@ public class Structure {
 	private final List<String> rows;
 	private final Map<Character, Tile> tiles;
 	private final int multi = GLRU.getMultiplier();
+	private int depth;
 
 	public Structure() {
 		rows = new ArrayList<>();
@@ -29,6 +30,10 @@ public class Structure {
 	public Structure addTile(char tileID, Tile tile) {
 		tiles.put(tileID, tile);
 		return this;
+	}
+
+	public int getDepth() {
+		return depth;
 	}
 
 	public int getHeight() {
@@ -56,7 +61,7 @@ public class Structure {
 	}
 
 	public Tile getTileAt(int x, int y) {
-		if (y / multi >= rows.size())
+		if (y / multi >= getDepth())
 			return Tile.Air;
 		String row = rows.get(y / multi);
 		if (row == null || x / multi >= row.length() || x / multi < 0)
@@ -71,5 +76,9 @@ public class Structure {
 				width = row.length();
 		}
 		return width;
+	}
+
+	protected void setDepth(int depth) {
+		this.depth = depth;
 	}
 }
