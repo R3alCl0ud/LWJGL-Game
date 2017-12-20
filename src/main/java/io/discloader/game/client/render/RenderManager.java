@@ -10,6 +10,7 @@ import io.discloader.game.common.tile.Tile;
 import io.discloader.game.common.world.room.Room;
 import io.discloader.game.common.world.structure.Structure;
 import io.discloader.game.render.GLRU;
+import io.discloader.game.ui.TypeSet;
 
 public class RenderManager {
 
@@ -20,8 +21,12 @@ public class RenderManager {
 	private static long lastFrameTime = 0, lastFPSShown = 0;
 	private static int fps, maxFPS = -1, minFPS = -1;
 
+	private final TypeSet font;
+
 	public RenderManager() {
 		renderers = new HashMap<>();
+		font = new TypeSet(16);
+
 	}
 
 	public static <T> void registerRenderer(Class<? extends T> cls, IRenderer<T> renderer) {
@@ -40,7 +45,7 @@ public class RenderManager {
 		Room room = RoomManager.getCurrentRoom();
 		EntityPlayer player = Index.getPlayer();
 
-		getRenderer(room).draw(room);
+		// getRenderer(room).draw(room);
 		renderPlayer(room, player);
 
 		long currentTime = System.currentTimeMillis(), deltaTime = currentTime - lastFrameTime;
@@ -54,9 +59,10 @@ public class RenderManager {
 				minFPS = fps;
 			lastFPSShown = 0;
 		}
-		RenderManager.getRenderer("").renderAt("FPS: " + fps, 0, 15);
-		RenderManager.getRenderer("").renderAt("MAX FPS: " + maxFPS, 0, 14);
-		RenderManager.getRenderer("").renderAt("MIN FPS: " + minFPS, 0, 13);
+		instance.font.drawText(RenderManager.getRenderer(""), "FPS: " + fps + "\nMAX FPS: " + maxFPS + "\nMIN FPS: " + minFPS, 1f, 1f);
+		// RenderManager.getRenderer("").renderAt("FPS: " + fps, 0, 15);
+		// RenderManager.getRenderer("").renderAt("MAX FPS: " + maxFPS, 0, 14);
+		// RenderManager.getRenderer("").renderAt("MIN FPS: " + minFPS, 0, 13);
 
 	}
 

@@ -1,5 +1,7 @@
 package io.discloader.game.client.render.room;
 
+import java.awt.Color;
+
 import io.discloader.game.client.render.IRenderer;
 import io.discloader.game.client.render.RenderManager;
 import io.discloader.game.client.render.entity.EntityRenderer;
@@ -8,6 +10,7 @@ import io.discloader.game.common.entity.player.EntityPlayer;
 import io.discloader.game.common.tile.Tile;
 import io.discloader.game.common.world.room.Room;
 import io.discloader.game.common.world.structure.Structure;
+import io.discloader.game.render.texture.ITexture;
 
 public class RoomRenderer implements IRenderer<Room> {
 
@@ -124,5 +127,14 @@ public class RoomRenderer implements IRenderer<Room> {
 
 	@Override
 	public void renderAt(Room t, int x, int y, int w, int h, float yaw, float z) {}
+
+	@Override
+	public void begin() {}
+
+	@Override
+	public void end() {}
+
+	@Override
+	public void drawTextureRegion(ITexture texture, float drawX, float drawY, float regX, float regY, float regWidth, float regHeight, Color c) {}
 
 }

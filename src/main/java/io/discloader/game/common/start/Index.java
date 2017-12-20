@@ -215,10 +215,14 @@ public class Index implements Runnable {
 		 */
 
 		// Set the clear color
-		GL11.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
+		glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_TEXTURE_2D);
-		glEnable(GL11.GL_DEPTH_TEST);
+//		glEnable(GL11.GL_DEPTH_TEST);
+
+
 
 		System.out.println(player.getLeftTile(current));
 		System.out.println(player.getRightTile(current));

@@ -81,4 +81,5 @@ public class Structure {
 	protected void setDepth(int depth) {
 		this.depth = depth;
 	}
+
 }

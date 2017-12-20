@@ -4,6 +4,8 @@ import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 
+import java.awt.Color;
+
 import org.lwjgl.opengl.GL11;
 
 import io.discloader.game.client.registry.TextureRegistry;
@@ -106,5 +108,14 @@ public class TileDoorRenderer implements IRenderer<TileDoor> {
 		GL11.glEnd();
 		GL11.glPopMatrix();
 	}
+
+	@Override
+	public void begin() {}
+
+	@Override
+	public void end() {}
+
+	@Override
+	public void drawTextureRegion(ITexture texture, float drawX, float drawY, float regX, float regY, float regWidth, float regHeight, Color c) {}
 
 }

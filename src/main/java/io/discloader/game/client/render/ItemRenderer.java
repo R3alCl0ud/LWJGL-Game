@@ -4,6 +4,8 @@ import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 
+import java.awt.Color;
+
 import org.lwjgl.opengl.GL11;
 
 import io.discloader.game.client.registry.TextureRegistry;
@@ -41,8 +43,7 @@ public class ItemRenderer implements IRenderer<IItem> {
 	}
 
 	@Override
-	public void renderAt(IItem t, int x, int y, int w, int h, float yaw) {
-	}
+	public void renderAt(IItem t, int x, int y, int w, int h, float yaw) {}
 
 	@Override
 	public void draw() {
@@ -59,7 +60,7 @@ public class ItemRenderer implements IRenderer<IItem> {
 	@Override
 	public void renderAt(IItem t, int x, int y) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -67,4 +68,13 @@ public class ItemRenderer implements IRenderer<IItem> {
 
 	@Override
 	public void renderAt(IItem t, int x, int y, int w, int h, float yaw, float z) {}
+
+	@Override
+	public void begin() {}
+
+	@Override
+	public void end() {}
+
+	@Override
+	public void drawTextureRegion(ITexture texture, float drawX, float drawY, float regX, float regY, float regWidth, float regHeight, Color c) {}
 }

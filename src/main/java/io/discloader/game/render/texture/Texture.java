@@ -50,11 +50,9 @@ public class Texture extends AbstractTexture {
 				throw new RuntimeException("MISSING TEXTURES");
 			}
 		}
-		// System.out.println(buf == null ? "it's null" : "not null");
 		setWidth(w.get(0));
 		setHeight(h.get(0));
 		bind();
-		uploadData(getWidth(), getHeight(), buf);
 
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -63,6 +61,24 @@ public class Texture extends AbstractTexture {
 		setParameter(GL11.GL_TEXTURE_WRAP_T, GL13.GL_CLAMP_TO_BORDER);
 		setParameter(GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		setParameter(GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+
+		uploadData(getWidth(), getHeight(), buf);
+	}
+
+	public Texture(int width, int height, ByteBuffer buffer) {
+		setWidth(width);
+		setHeight(height);
+		bind();
+
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+		setParameter(GL11.GL_TEXTURE_WRAP_S, GL13.GL_CLAMP_TO_BORDER);
+		setParameter(GL11.GL_TEXTURE_WRAP_T, GL13.GL_CLAMP_TO_BORDER);
+		setParameter(GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		setParameter(GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+
+		uploadData(getWidth(), getHeight(), buffer);
 	}
 
 	/**
@@ -101,8 +117,7 @@ public class Texture extends AbstractTexture {
 				}
 			}
 		} else {
-			try (InputStream source = Texture.class.getClassLoader().getResourceAsStream(resource);
-					ReadableByteChannel rbc = Channels.newChannel(source)) {
+			try (InputStream source = Texture.class.getClassLoader().getResourceAsStream(resource); ReadableByteChannel rbc = Channels.newChannel(source)) {
 				buffer = createByteBuffer(bufferSize);
 
 				while (true) {
